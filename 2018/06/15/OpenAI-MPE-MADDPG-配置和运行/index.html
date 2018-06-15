@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RL,随笔," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Multi-Agent Particle Environment（MPE）介绍Multi-Agent Particle Environment（MPE）是由OpenAI开源的一款多智能体强化学习实验平台，以OpenAI的gym为基础，使用Python编写而成。它创造了一个简单的多智能体粒子世界，粒子们可以进行连续的观察和离散的动作。">
+<meta name="keywords" content="RL,随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenAI MPE&amp;MADDPG 配置和运行">
+<meta property="og:url" content="http://yoursite.com/2018/06/15/OpenAI-MPE-MADDPG-配置和运行/index.html">
+<meta property="og:site_name" content="Sanshibayuan">
+<meta property="og:description" content="Multi-Agent Particle Environment（MPE）介绍Multi-Agent Particle Environment（MPE）是由OpenAI开源的一款多智能体强化学习实验平台，以OpenAI的gym为基础，使用Python编写而成。它创造了一个简单的多智能体粒子世界，粒子们可以进行连续的观察和离散的动作。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog.openai.com/content/images/2017/06/simple_adv_maddpg_notag.gif">
+<meta property="og:updated_time" content="2018-06-15T07:52:52.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenAI MPE&amp;MADDPG 配置和运行">
+<meta name="twitter:description" content="Multi-Agent Particle Environment（MPE）介绍Multi-Agent Particle Environment（MPE）是由OpenAI开源的一款多智能体强化学习实验平台，以OpenAI的gym为基础，使用Python编写而成。它创造了一个简单的多智能体粒子世界，粒子们可以进行连续的观察和离散的动作。">
+<meta name="twitter:image" content="https://blog.openai.com/content/images/2017/06/simple_adv_maddpg_notag.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/15/OpenAI-MPE-MADDPG-配置和运行/"/>
+
+
+
+
+
+  <title>OpenAI MPE&MADDPG 配置和运行 | Sanshibayuan</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanshibayuan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/OpenAI-MPE-MADDPG-配置和运行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanshibayuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanshibayuan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenAI MPE&MADDPG 配置和运行</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T12:31:00+08:00">
+                2018-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Multi-Agent-Particle-Environment（MPE）"><a href="#Multi-Agent-Particle-Environment（MPE）" class="headerlink" title="Multi-Agent Particle Environment（MPE）"></a>Multi-Agent Particle Environment（MPE）</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><a href="https://github.com/openai/multiagent-particle-envs" target="_blank" rel="noopener">Multi-Agent Particle Environment（MPE）</a>是由OpenAI开源的一款多智能体强化学习实验平台，以OpenAI的gym为基础，使用Python编写而成。它创造了一个简单的多智能体粒子世界，粒子们可以进行连续的观察和离散的动作。</p>
+<p><img src="https://blog.openai.com/content/images/2017/06/simple_adv_maddpg_notag.gif" alt="实验效果"><br><a id="more"></a></p>
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><ul>
+<li>实验环境</li>
+</ul>
+<p><code>Python 3.6.4</code><br><code>Windows 10</code><br><code>OpenAI gym 0.10.5</code><br><code>Numpy</code><br><code>Pyglet 1.2.0</code></p>
+<ul>
+<li>配置步骤</li>
+</ul>
+<ol>
+<li><code>cd</code>至根目录下，执行<code>pip install -e .</code>安装环境。</li>
+<li>运行程序<code>python bin/interactive.py --scenario simple.py</code></li>
+</ol>
+<h2 id="Demo运行"><a href="#Demo运行" class="headerlink" title="Demo运行"></a>Demo运行</h2><ul>
+<li>环境说明</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Env Name</th>
+<th style="text-align:center">Communication</th>
+<th>Competitive</th>
+<th style="text-align:center">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>simple.py</code></td>
+<td style="text-align:center">无</td>
+<td>有</td>
+<td style="text-align:center">单agent趋近landmark点，以距离landmark的距离远近作为reward。这不是一个多智能体环境，只是用来调试policy的。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_adversary.py</code> <br>(身体欺骗)</td>
+<td style="text-align:center">无</td>
+<td>有</td>
+<td style="text-align:center">1 个adversary (红球), N个agent(绿球),    N 个landmark (大部分情况下 N=2). 所有agent可以观察landmark和其他agent的位置。其中一个landmark为目标landmark（绿色）。Agent们以它们中的任何一个距离目标landmark的距离为reward，但若adversary靠近目标landmark，将会得到negative reward。Adversary 以距离目标landmark的距离作为回报，但它并不知道哪个是landmark。因此，agent将不得不学习“分散”策略，从而到达各个landmark，混淆adversary。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_crypto.py</code> <br>(加密通信)</td>
+<td style="text-align:center">有</td>
+<td>有</td>
+<td style="text-align:center">两个agent（Alice和Bob），一个adversary。Alice会通过一个公共频道传输一条私密消息给Bob。Alice和Bob的reward是基于Bob是否良好的重构了这条消息，但如果adversary可以理解这条信息，他们就将受到negative reward。Alice和Bob在每个周期开始时会随机产生一个private key，他们必须学习如何利用它来加密消息。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_push.py</code> <br>(逼开)</td>
+<td style="text-align:center">无</td>
+<td>有</td>
+<td style="text-align:center">一个agent, 1个adversary, 1 个landmark。 Agent以到landmark的距离作为reward。Adversary 以接近landmark和使agent远离landmark作为reward。因此adversary将会学习如何将agent赶离landmark。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_reference.py</code></td>
+<td style="text-align:center">有</td>
+<td>无</td>
+<td style="text-align:center">2个agent, 3个不同颜色的landmark。每个agent都想到达他们的目标landmark，但是这个landmark只有对方知道。在这里Reward是集体的。因此agent必须学会如何告诉对方它的目标，以及如何到达该目标。这个场景跟simple_speaker_listener是一样的，即agent们都各是speaker又是listener。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_speaker_listener.py</code> <br>(合作交流)</td>
+<td style="text-align:center">有</td>
+<td>无</td>
+<td style="text-align:center">和simple_reference基本相同，但在这个场景中：其中一个agent为speaker（灰色），它并不移动,只是观察另一个agent的目标， 另一个agent为listener，它无法说话，但必须到达正确的目标。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_spread.py</code><br> (合作导航)</td>
+<td style="text-align:center">无</td>
+<td>无</td>
+<td style="text-align:center">N个agent, N个landmark。 Agent以他们到每个landmark的距离作为reward。Agent之间发生碰撞时会受到惩罚。因此，agent们必须学会在避免碰撞的前提下覆盖所有的landmark。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_tag.py</code> <br>(捕捉)</td>
+<td style="text-align:center">无</td>
+<td>有</td>
+<td style="text-align:center">捕捉-逃跑环境。agents（绿色）速度更快，它们想要躲避adversary（红色）的捕捉。Adversary稍慢，他们想要捕捉agent。Obstacle (大黑圈) 挡在了路中央。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>simple_world_comm.py</code></td>
+<td style="text-align:center">有</td>
+<td>有</td>
+<td style="text-align:center">在文章所附的视频中的环境。和simple_tag基本相同,但在这个场景中（1）agent靠近food（小蓝球）会受到reward；（2）forest 可以供agent躲藏；（3）leader adversary可以随时看到所有的agent，并且可以与其他adversary进行通信交流，协调捕捉策略。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>环境运行常见问题<ol>
+<li>无法打开可视化终端<br>问题原因：<code>Pyglet</code>版本问题<br>解决方法：安装 <code>pyglet1.2.0</code></li>
+</ol>
+</li>
+</ul>
+<ol start="2">
+<li><p><code>simple_world_comm</code> <code>simple_reference</code> 运行报错 <code>AssertionError: nvec should be a 1d array (or list) of ints</code><br>问题原因：<code>gym 0.10.5</code>环境下<code>spaces-multi_discrete_py</code>中函数定义冲突<br>解决办法：使用<code>gym 0.9.4</code>下的<code>multi_discrete_py</code>替换</p>
+</li>
+<li><p><code>simple_crypto</code> 运行报错： <code>TypeError: set_color() got multiple values for argument &#39;alpha&#39;</code><br>问题原因：<code>rendering</code>函数下<code>set_color()</code>参数问题<br>解决方法：暂未找到。。</p>
+</li>
+</ol>
+<h1 id="Multi-Agent-Deep-Deterministic-Policy-Gradient-MADDPG"><a href="#Multi-Agent-Deep-Deterministic-Policy-Gradient-MADDPG" class="headerlink" title="Multi-Agent Deep Deterministic Policy Gradient (MADDPG)"></a>Multi-Agent Deep Deterministic Policy Gradient (MADDPG)</h1><h2 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h2><p><a href="https://github.com/openai/multiagent-particle-envs" target="_blank" rel="noopener">Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments</a>提出的MADDPG算法（混合合作-竞争环境下的多智能体<em>Actor-Critic</em>）的代码。必须在<a href="https://blog.openai.com/content/images/2017/06/simple_adv_maddpg_notag.gif" target="_blank" rel="noopener">Multi-Agent Particle Environments （MPE）</a>的环境运行。</p>
+<h2 id="安装配置-1"><a href="#安装配置-1" class="headerlink" title="安装配置"></a>安装配置</h2><ul>
+<li>实验环境</li>
+</ul>
+<p><code>Python 3.6.4</code><br><code>Windows10</code><br><code>OpenAI gym 0.10.5</code><br><code>Numpy</code><br><code>Tensorflow</code><br><code>Pyglet 1.2.0</code></p>
+<ul>
+<li>配置步骤</li>
+</ul>
+<ol>
+<li><code>cd</code>至根目录下，执行<code>pip install -e .</code>，安装环境。</li>
+<li>安装<code>multiagent-particle-envs</code>,并确保将其添加到<code>PYTHONPATH</code>环境变量中。</li>
+<li><code>cd</code>至<code>experiments</code>目录下，运行程序<code>python train.py --scenario simple</code></li>
+</ol>
+<h3 id="命令参数说明"><a href="#命令参数说明" class="headerlink" title="命令参数说明"></a>命令参数说明</h3><h4 id="环境选项"><a href="#环境选项" class="headerlink" title="环境选项"></a>环境选项</h4><ul>
+<li><p><code>--scenario</code>: MPE中的环境 (默认: <code>&quot;simple&quot;</code>)</p>
+</li>
+<li><p><code>--max-episode-len</code> 环境的每个周期的长度 (默认: <code>25</code>)</p>
+</li>
+<li><p><code>--num-episodes</code> 训练周期总数 (默认: <code>60000</code>)</p>
+</li>
+<li><p><code>--num-adversaries</code>: 环境中的adversary数量 (默认: <code>0</code>)</p>
+</li>
+<li><p><code>--good-policy</code>: 环境中good policy算法(默认: <code>&quot;maddpg&quot;</code>; 选项: {<code>&quot;maddpg&quot;</code>, <code>&quot;ddpg&quot;</code>})</p>
+</li>
+<li><p><code>--adv-policy</code>: 环境中adversary policy算法(默认: <code>&quot;maddpg&quot;</code>; 选项: {<code>&quot;maddpg&quot;</code>, <code>&quot;ddpg&quot;</code>})</p>
+</li>
+</ul>
+<h4 id="核心训练参数"><a href="#核心训练参数" class="headerlink" title="核心训练参数"></a>核心训练参数</h4><ul>
+<li><p><code>--lr</code>: 学习速率 (默认: <code>1e-2</code>)</p>
+</li>
+<li><p><code>--gamma</code>: 损失因子(discount factor) (默认: <code>0.95</code>)</p>
+</li>
+<li><p><code>--batch-size</code>: Batch大小 (默认: <code>1024</code>)</p>
+</li>
+<li><p><code>--num-units</code>: 多层神经网络层数 (默认: <code>64</code>)</p>
+</li>
+</ul>
+<h4 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h4><ul>
+<li><p><code>--exp-name</code>: 实验的名称，用以保存结果。 (默认: <code>None</code>)</p>
+</li>
+<li><p><code>--save-dir</code>: 保存训练结果和模型的位置 (默认: <code>&quot;/tmp/policy/&quot;</code>)</p>
+</li>
+<li><p><code>--save-rate</code>: 模型将会以这个周期频率进行保存 (默认: <code>1000</code>)</p>
+</li>
+<li><p><code>--load-dir</code>: 载入训练结果和模型的位置 (默认: <code>&quot;&quot;</code>)</p>
+</li>
+</ul>
+<h4 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h4><ul>
+<li><p><code>--restore</code>: 恢复在<code>load-dir</code>的训练结果, 并且继续训练 (默认: <code>False</code>)</p>
+</li>
+<li><p><code>--display</code>: 展示训练结果, 但不继续训练 (默认: <code>False</code>)</p>
+</li>
+<li><p><code>--benchmark</code>: 对训练结果进行基准评估, 保存结果到 <code>benchmark-dir</code> 文件夹 (默认: <code>False</code>)</p>
+</li>
+<li><p><code>--benchmark-iters</code>: 执行基准评估的训练周期 (默认: <code>100000</code>)</p>
+</li>
+<li><p><code>--benchmark-dir</code>: 存放基准数据的目录 (默认: <code>&quot;./benchmark_files/&quot;</code>)</p>
+</li>
+<li><p><code>--plots-dir</code>: 存放训练曲线的目录 (默认: <code>&quot;./learning_curves/&quot;</code>)</p>
+</li>
+</ul>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><ul>
+<li><p>进行训练<br><code>python train.py --scenario simple_push --num-episodes 1000000 --exp-name exp1 --save-dir dir</code></p>
+</li>
+<li><p>训练结果可视化<br><code>python train.py --scenario simple_push --load-dir dir --display</code></p>
+</li>
+</ul>
+<ul>
+<li>继续训练<br><code>python train.py --scenario simple_push --load-dir dir --restore --num-episodes 80000</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RL/" rel="tag"># RL</a>
+          
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/15/Leetcode 164 数组最大间隔（线性复杂度实现）Python/" rel="prev" title="Leetcode 164 数组最大间隔（线性复杂度实现）Python">
+                Leetcode 164 数组最大间隔（线性复杂度实现）Python <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sanshibayuan</p>
+              <p class="site-description motion-element" itemprop="description">I would rather lose a lover than to love a loser</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/sanshibayuan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="hong_zhiyin@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Multi-Agent-Particle-Environment（MPE）"><span class="nav-number">1.</span> <span class="nav-text">Multi-Agent Particle Environment（MPE）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装配置"><span class="nav-number">1.2.</span> <span class="nav-text">安装配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo运行"><span class="nav-number">1.3.</span> <span class="nav-text">Demo运行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Multi-Agent-Deep-Deterministic-Policy-Gradient-MADDPG"><span class="nav-number">2.</span> <span class="nav-text">Multi-Agent Deep Deterministic Policy Gradient (MADDPG)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍-1"><span class="nav-number">2.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装配置-1"><span class="nav-number">2.2.</span> <span class="nav-text">安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令参数说明"><span class="nav-number">2.2.1.</span> <span class="nav-text">命令参数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境选项"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">环境选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心训练参数"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">核心训练参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保存"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">保存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#评估"><span class="nav-number">2.2.1.4.</span> <span class="nav-text">评估</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">2.2.2.</span> <span class="nav-text">Demo</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanshibayuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
