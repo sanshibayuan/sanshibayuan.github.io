@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Sanshibayuan">
 <meta property="og:description" content="LeetCode 地址：https://leetcode.com/problems/maximum-gap/description/ 题目描述给定一个未排序数组，找出排序后的元素之间的最大间隔。 要求用线性时间复杂度实现。 例如：输入为【3,6,9,1,10】，输出应为最大间隔3。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-06-15T10:18:46.394Z">
+<meta property="og:updated_time" content="2018-06-15T11:09:15.099Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 164 数组最大间隔（线性复杂度实现）Python">
 <meta name="twitter:description" content="LeetCode 地址：https://leetcode.com/problems/maximum-gap/description/ 题目描述给定一个未排序数组，找出排序后的元素之间的最大间隔。 要求用线性时间复杂度实现。 例如：输入为【3,6,9,1,10】，输出应为最大间隔3。">
@@ -336,7 +336,7 @@
 <p>其中，桶的上下界若已有元素（存在一个桶对应多个元素），则只需计算新元素与下界的较小值，同时计算其与上界的较大值，并将该最值作为新下界/上界即可；</p>
 <p>最后，计算每个桶的下界与下一个桶的上节的差值。差值最大值即为最大间隔。</p>
 <p>时间复杂度为O(n+b)≈O(n)</p>
-<h1 id="完整代码（Python"><a href="#完整代码（Python" class="headerlink" title="完整代码（Python"></a>完整代码（Python</h1><pre><code>def maximumGap(num):
+<h1 id="完整代码（Python"><a href="#完整代码（Python" class="headerlink" title="完整代码（Python)"></a>完整代码（Python)</h1><pre><code>def maximumGap(num):
     if len(num) &lt; 2 or min(num) == max(num):
         return 0
     a, b = min(num), max(num)
@@ -536,7 +536,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#题目分析"><span class="nav-number">2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码（Python"><span class="nav-number">3.</span> <span class="nav-text">完整代码（Python</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#题目分析"><span class="nav-number">2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码（Python"><span class="nav-number">3.</span> <span class="nav-text">完整代码（Python)</span></a></li></ol></div>
             
 
           </div>
