@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="队名：无敌风火轮  成绩：初赛第三，复赛第四，决赛第四  写在前面 这次比赛是我第一次完完整整参加下来的比赛。一开始的时候，自己遇到了挺多的困难，不过很幸运结识了很棒的队友们，一起努力和提高，并在北京一起参加了决赛。虽然最终很遗憾和前三擦肩而过，不过还是收获很大。决赛的队伍都有很好的思路和方法，答辩的时候学习到了很多。本文旨在分享一下我们队的解决方法以供参考，并且总结记录一下别人的良好思路。代">
+<meta name="keywords" content="Machine Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搜狐内容识别算法大赛解决方案(4th)">
+<meta property="og:url" content="http://yoursite.com/2018/06/16/搜狐内容识别算法大赛解决方案/index.html">
+<meta property="og:site_name" content="Sanshibayuan">
+<meta property="og:description" content="队名：无敌风火轮  成绩：初赛第三，复赛第四，决赛第四  写在前面 这次比赛是我第一次完完整整参加下来的比赛。一开始的时候，自己遇到了挺多的困难，不过很幸运结识了很棒的队友们，一起努力和提高，并在北京一起参加了决赛。虽然最终很遗憾和前三擦肩而过，不过还是收获很大。决赛的队伍都有很好的思路和方法，答辩的时候学习到了很多。本文旨在分享一下我们队的解决方法以供参考，并且总结记录一下别人的良好思路。代">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072587/1.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/2.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/dr8hlglfd/image/upload/v1529075378/111.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/3.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/4.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074560/6.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074795/v2-92e49aef6626add56e85c2ee1b36e9aa_r.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074560/7.jpg">
+<meta property="og:image" content="http://slade-ruan.me/img/in-post/ctpn/in-post-1022-02.png">
+<meta property="og:updated_time" content="2018-06-16T00:17:55.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搜狐内容识别算法大赛解决方案(4th)">
+<meta name="twitter:description" content="队名：无敌风火轮  成绩：初赛第三，复赛第四，决赛第四  写在前面 这次比赛是我第一次完完整整参加下来的比赛。一开始的时候，自己遇到了挺多的困难，不过很幸运结识了很棒的队友们，一起努力和提高，并在北京一起参加了决赛。虽然最终很遗憾和前三擦肩而过，不过还是收获很大。决赛的队伍都有很好的思路和方法，答辩的时候学习到了很多。本文旨在分享一下我们队的解决方法以供参考，并且总结记录一下别人的良好思路。代">
+<meta name="twitter:image" content="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072587/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/16/搜狐内容识别算法大赛解决方案/"/>
+
+
+
+
+
+  <title>搜狐内容识别算法大赛解决方案(4th) | Sanshibayuan</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sanshibayuan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/16/搜狐内容识别算法大赛解决方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sanshibayuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanshibayuan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搜狐内容识别算法大赛解决方案(4th)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-16T08:17:00+08:00">
+                2018-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072587/1.jpg" alt="此处输入图片的描述"></p>
+<ul>
+<li>队名：无敌风火轮 </li>
+<li>成绩：初赛第三，复赛第四，决赛第四</li>
+</ul>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><hr>
+<p>这次比赛是我第一次完完整整参加下来的比赛。一开始的时候，自己遇到了挺多的困难，不过很幸运结识了很棒的队友们，一起努力和提高，并在北京一起参加了决赛。虽然最终很遗憾和前三擦肩而过，不过还是收获很大。决赛的队伍都有很好的思路和方法，答辩的时候学习到了很多。<br>本文旨在分享一下我们队的解决方法以供参考，并且总结记录一下别人的良好思路。代码稍微整理了一下，放在了<a href="https://github.com/sanshibayuan/Sohu-2018" target="_blank" rel="noopener">github</a>上抛砖引玉，有需要的可以自取~<br><a id="more"></a></p>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><hr>
+<p><a href="https://biendata.com/competition/sohu2018/" target="_blank" rel="noopener">大赛官网</a>对赛题的描述如下：</p>
+<blockquote>
+<p>参赛队伍利用搜狐给定的数据集来训练模型，训练数据分为标注数据（数据集规模为5万条新闻和35万张新闻配图，标注为有营销意图的新闻、文本片段和配图），和未标注数据（数据规模为20万条新闻和100万张新闻配图）。比赛要求在给定新的新闻内容集合和配图集合之后（数据集规模为1万条新闻和7万张新闻配图），参赛队伍能识别出有营销意图的<strong>新闻</strong>、<strong>文本片段</strong>和<strong>配图</strong>。</p>
+</blockquote>
+<p>赛题的三个任务较为明确，每个任务都不简单。个人觉得比较难的地方主要有三点：</p>
+<ol>
+<li>标注的新闻标签有3类，分别是0（无营销性），1（部分营销），2（强营销性），其中各个类别之间的区分较为模糊，给直接分类带来了困难；</li>
+<li>关于营销图片提取部分，图片数据量较大，同时营销性的定义也较为模糊；</li>
+<li>营销文本提取的评分规则较为严苛，必须标点、空格等均匹配才能得分。这部分基本所有队都没有找到很好的解决方法，做了的队基本都是用的基于规则的提取方法。</li>
+</ol>
+<h1 id="总体思路"><a href="#总体思路" class="headerlink" title="总体思路"></a>总体思路</h1><hr>
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><h3 id="去html标签"><a href="#去html标签" class="headerlink" title="去html标签"></a>去html标签</h3><p>利用官方给的<code>tool.py</code>去除html标签，得到filter文件。</p>
+<h3 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h3><p>利用<code>jieba</code>对训练集，验证集，未标注数据集进行分词，根据分词结果，添加了外部词典，保证分词的准确。</p>
+<h3 id="Word2vec特征"><a href="#Word2vec特征" class="headerlink" title="Word2vec特征"></a>Word2vec特征</h3><p>用训练集，测试集和未标注数据集组成训练语料，训练<code>word2vec</code>词向量。</p>
+<h3 id="TFIDF特征"><a href="#TFIDF特征" class="headerlink" title="TFIDF特征"></a>TFIDF特征</h3><p>对训练集和测试集的数据集进行tfidf统计特征抽取，分别使用<strong>分词文本+ 词特征</strong>和<strong>未分词文本+字特征</strong>构建TFIDF词典。采用<code>tri-ngram</code>, 词典大小为30000，除去出现频率大于0.95的停用词和出现概率小于3次的生僻词，建立VSM向量空间模型。</p>
+<h3 id="手工特征"><a href="#手工特征" class="headerlink" title="手工特征"></a>手工特征</h3><p>在分词之前，通过正则匹配的方式提取出营销文本中比较重要的四个特征：<strong>电话号码</strong>，<strong>邮箱</strong>，<strong>网址</strong>以及与<strong>微信</strong>相关的特征，作为后续模型训练的特征。如果一篇文章中含有该特征，特征向量则为：</p>
+<pre><code>[电话号码，邮箱，网址，微信相关]
+</code></pre><p>对应维度为1，否则为0。</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/2.jpg" alt="此处输入图片的描述"></p>
+<h2 id="新闻标签分类"><a href="#新闻标签分类" class="headerlink" title="新闻标签分类"></a>新闻标签分类</h2><p>一开始我们尝试的是直接三分类，但是效果有限。比赛后期我们转变了思路，一直用的二-二分类，取得了不错的效果。决赛的队伍好像也只有我们队这么做。</p>
+<h3 id="01-2-二分类"><a href="#01-2-二分类" class="headerlink" title="01-2 二分类"></a>01-2 二分类</h3><p>我们通过对数据的观察分析，认为标签为2的强营销新闻一般长度较短，容易以简单的特征区分。因此考虑先将三分类化为二分类问题，先识别出强营销性新闻，保证一个较高的baseline分数。</p>
+<h3 id="0-1-二分类"><a href="#0-1-二分类" class="headerlink" title="0-1 二分类"></a>0-1 二分类</h3><p>同理，由于01标签的数据表现特征相似，因此需要挖掘深层次的信息来区分。再对0-1的新闻进行分类，进一步提升结果。</p>
+<h2 id="营销图片提取"><a href="#营销图片提取" class="headerlink" title="营销图片提取"></a>营销图片提取</h2><p>这个问题的一般思路是进行图片分类，我们一开始也采用了<code>GoogleNet</code>进行图片分类，但是效果不佳，原因可能是图片的营销性定义和表现都不明显。最后直到决赛也没有看到有较好的图片分类模型。后来我们转换思路，用了<code>tessract</code>进行OCR文字识别，同时使用<code>CTPN</code>进行图片文字区域的定位，在时间和精度上都取得了不错的效果。</p>
+<h3 id="图像文本识别"><a href="#图像文本识别" class="headerlink" title="图像文本识别"></a>图像文本识别</h3><p>OCR即光学字符识别，用来识别图片中的文字。我们首先对图片进行灰度化，然后使用<code>tesseract</code>进行文本识别。</p>
+<p><img src="https://res.cloudinary.com/dr8hlglfd/image/upload/v1529075378/111.jpg" alt="此处输入图片的描述"></p>
+<h3 id="营销性分类"><a href="#营销性分类" class="headerlink" title="营销性分类"></a>营销性分类</h3><p>将新闻分句后建立模型，进行句子营销性分类，从而对OCR得到的文本进行二分类。</p>
+<h3 id="文本区域检测、筛选"><a href="#文本区域检测、筛选" class="headerlink" title="文本区域检测、筛选"></a>文本区域检测、筛选</h3><p>使用<code>Connectionist Text Proposal Network（CTPN)</code> 检测文字区域，计算其面积。使用面积阈值对文字区域面积较小的营销图片进行剔除，修改为非营销图片。</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/3.jpg" alt="此处输入图片的描述"></p>
+<h2 id="营销文本提取"><a href="#营销文本提取" class="headerlink" title="营销文本提取"></a>营销文本提取</h2><h3 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h3><p>人工选取的一些营销关键词如下图。</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529072588/4.jpg" alt="此处输入图片的描述"></p>
+<h3 id="营销文本提取-1"><a href="#营销文本提取-1" class="headerlink" title="营销文本提取"></a>营销文本提取</h3><p>从结果文件中标签为1的新闻里，提取含有上述关键词的句子片段。此处提取句子基于含有html标签的数据集，保证精准。</p>
+<h1 id="主要模型"><a href="#主要模型" class="headerlink" title="主要模型"></a>主要模型</h1><hr>
+<h2 id="LightGBM"><a href="#LightGBM" class="headerlink" title="LightGBM"></a>LightGBM</h2><p><code>LightGBM</code>是现在很火的方法，采用Histogram算法，其思想是将连续的浮点特征离散成k个离散值，并构造宽度为k的Histogram。然后遍历训练数据，统计每个离散值在直方图中的累计统计量。在进行特征选择时，只需要根据直方图的离散值，遍历寻找最优的分割点。在我们的尝试中，它的效果好于<code>XGBoost</code>，是我们的主力模型。</p>
+<h2 id="NBSVM"><a href="#NBSVM" class="headerlink" title="NBSVM"></a>NBSVM</h2><p>来自论文<a href="http://www.aclweb.org/anthology/P12-2018" target="_blank" rel="noopener">Baselines and Bigrams: Simple, Good Sentiment and Topic Classification</a>，通过将 <code>Naive Bayes</code> 得到的概率与原始数据相结合的结果作为<code>SVM</code>的输入（可以看作是对<code>SVM</code>的一种正则化），将两种最常见的基础分类模型很好的结合起来，形成一种通用性强、效果更佳的基础模型。在我们的尝试中，它的效果好过<code>LR</code>和<code>SVM</code>，是我们早期的主力模型之一。</p>
+<h2 id="TextCNN"><a href="#TextCNN" class="headerlink" title="TextCNN"></a>TextCNN</h2><p><code>TextCNN</code> 是利用卷积神经网络对文本进行分类的算法，它可以捕捉局部相关性，提取句子中类似n-gram的关键信息。</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074560/6.jpg" alt="过程原理图"></p>
+<h2 id="TextRNN"><a href="#TextRNN" class="headerlink" title="TextRNN"></a>TextRNN</h2><p><code>TextCNN</code>能够在很多任务里面能有不错的表现，但它有个最大问题是固定 filter_size的视野，一方面无法建模更长的序列信息，另一方面 filter_size的超参调节也很繁琐。<br>具体在文本分类任务中，<code>Bi-directional RNN</code>从某种意义上可以理解为可以捕获变长且双向的的 n-gram 信息。<br>我们使用了<code>Bi-LSTM</code>，<code>Bi-GRU</code>等模型。</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074795/v2-92e49aef6626add56e85c2ee1b36e9aa_r.jpg" alt="此处输入图片的描述"></p>
+<h2 id="TextRCNN"><a href="#TextRCNN" class="headerlink" title="TextRCNN"></a>TextRCNN</h2><p><code>TextRCNN</code>结合了CNN和RNN的特点，首先利用前向和后向RNN得到每个词的前向和后向上下文的表示，这样词的表示就变成词向量和前向后向上下文向量concat起来的形式了，最后再接跟<code>TextCNN</code>相同卷积层，池化层即可，</p>
+<p><img src="http://res.cloudinary.com/dr8hlglfd/image/upload/v1529074560/7.jpg" alt="此处输入图片的描述"></p>
+<h2 id="CTPN"><a href="#CTPN" class="headerlink" title="CTPN"></a>CTPN</h2><p>图片文本区域识别我们采用了CTPN模型，来自文章 <a href="https://arxiv.org/abs/1609.03605" target="_blank" rel="noopener">Detecting Text in Natural Image with Connectionist Text Proposal Network</a>，我们参考的是<a href="https://github.com/eragonruan/text-detection-ctpn" target="_blank" rel="noopener">Github</a>上的博主对它的TensorFlow实现。</p>
+<p><img src="http://slade-ruan.me/img/in-post/ctpn/in-post-1022-02.png" alt="CTPN结构图"></p>
+<p><code>CTPN</code>实际上是目标检测经典模型<code>FasterRCNN</code>的一个改进，同样使用了RPN网络，区别在于固定了anchor的宽度和加入了<code>Bi-RNN</code>层，用以检测出水平位置上的文本信息，并通过<code>side-refinement</code>进行连接。具体原理可参考<a href="https://zhuanlan.zhihu.com/p/34757009" target="_blank" rel="noopener">知乎专栏</a>，讲解地很清楚。</p>
+<h1 id="模型提升"><a href="#模型提升" class="headerlink" title="模型提升"></a>模型提升</h1><hr>
+<h2 id="多维度融合"><a href="#多维度融合" class="headerlink" title="多维度融合"></a>多维度融合</h2><p>针对各个阶段特征和模型的特点，我们采用多维度处理和针对性使用不同的融合方法，得到了较大提升。</p>
+<ul>
+<li><p>多维度</p>
+<ol>
+<li>分词文本+wordtfidf和未分词文本+chartfidf构建词典</li>
+<li>使用tfidf特征进行lgbm和使用word2vec特征进行lgbm</li>
+<li>采用不同维度的word2vec向量</li>
+<li>加入手工特征</li>
+</ol>
+</li>
+<li><p>融合</p>
+<ol>
+<li>第一个二分类，根据特点采用二十五个结果的投票法；</li>
+<li>深度学习模型直接输出类别精度较差，采用每个维度下的四个模型结果做概率平均融合，得到结果；</li>
+<li>第二个二分类，考虑到之后进行的图片文字提取和P，R对分数的影响，以及三种最终模型的特征差异性较大，采用了<strong>贪婪投票法</strong>，只要三个最终模型有一判定为标签1即为1.</li>
+</ol>
+</li>
+</ul>
+<h2 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h2><p>我们通过对未标注数据进行标注，并按不同比例加入未标注数据来进行数据增强，这是大家都采用了的做法。<br>数据增强还有一种很好的方法是进行<strong>翻译</strong>，我们有考虑过但是没来得及做。最终的第一名就采用了翻译的方法。</p>
+<h2 id="面积筛选"><a href="#面积筛选" class="headerlink" title="面积筛选"></a>面积筛选</h2><p>在提供的训练集中，我们发现文字区域比较小，且文字带有一定的营销意图的图片在营销图片和非营销图片中都有大量出现。同时考虑到较小的文字区域很可能被忽视，所以我们最终将文字区域面积小于一定阈值的营销图片重分类为非营销。</p>
+<h1 id="总结思考"><a href="#总结思考" class="headerlink" title="总结思考"></a>总结思考</h1><h2 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h2><ul>
+<li>简单的模型未必就效果不好，有队伍只使用了<code>XGBoost</code>，也有队伍直接用一个12层的<code>MLP</code>直接进行三分类的，效果都很好，完爆我们的单模型分数；</li>
+<li>关于词向量的初始化，可以采用预训练的词向量进行权重初始化，可参考刚刚开源的<a href="https://github.com/Embedding/Chinese-Word-Vectors" target="_blank" rel="noopener">上百种预训练中文词向量</a>；还有一种比较好的方法是先冻结<code>embedding</code>层，将模型训练一段时间后再进行<code>embedding</code>层初始化；</li>
+<li>采用<code>Semi-supervised</code>方法对未标注集进行更好的利用；</li>
+<li>针对训练集数据不平衡问题，是否有更好的解决方法；</li>
+<li>新闻标签分类只利用了文本特征，但很多营销新闻只有图片有营销性，因此若能将图片特征和文本特征一起考虑进去进行分类，效果可能会更好；</li>
+<li>使用图片识别下来的文本进行数据扩充和模型训练；</li>
+<li>关于图片分类模型，直接分类效果不佳，可以考虑加入如<code>Attention</code>、<code>Residual</code>、<code>k-max-pooling</code>等技巧，对神经网络进行改进；</li>
+<li>第一名的队伍还用到了<code>snapshot emseble</code>，减少了模型训练时间；</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次的比赛收获还是很大，决赛期间搜狐的招待也很周到，也结识到了很多优秀的朋友。希望大家以后江湖还能相见~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/15/Leetcode 164 数组最大间隔（线性复杂度实现）Python/" rel="next" title="Leetcode 164 数组最大间隔（线性复杂度实现）Python">
+                <i class="fa fa-chevron-left"></i> Leetcode 164 数组最大间隔（线性复杂度实现）Python
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNzM3Mi8xMzkwNg=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1.jpg"
+                alt="Sanshibayuan" />
+            
+              <p class="site-author-name" itemprop="name">Sanshibayuan</p>
+              <p class="site-description motion-element" itemprop="description">I would rather lose a lover than to love a loser</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/sanshibayuan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="hong_zhiyin@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#题目描述"><span class="nav-number">2.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总体思路"><span class="nav-number">3.</span> <span class="nav-text">总体思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据处理"><span class="nav-number">3.1.</span> <span class="nav-text">数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#去html标签"><span class="nav-number">3.1.1.</span> <span class="nav-text">去html标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词"><span class="nav-number">3.1.2.</span> <span class="nav-text">分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Word2vec特征"><span class="nav-number">3.1.3.</span> <span class="nav-text">Word2vec特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TFIDF特征"><span class="nav-number">3.1.4.</span> <span class="nav-text">TFIDF特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手工特征"><span class="nav-number">3.1.5.</span> <span class="nav-text">手工特征</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新闻标签分类"><span class="nav-number">3.2.</span> <span class="nav-text">新闻标签分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-2-二分类"><span class="nav-number">3.2.1.</span> <span class="nav-text">01-2 二分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-二分类"><span class="nav-number">3.2.2.</span> <span class="nav-text">0-1 二分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#营销图片提取"><span class="nav-number">3.3.</span> <span class="nav-text">营销图片提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像文本识别"><span class="nav-number">3.3.1.</span> <span class="nav-text">图像文本识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#营销性分类"><span class="nav-number">3.3.2.</span> <span class="nav-text">营销性分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本区域检测、筛选"><span class="nav-number">3.3.3.</span> <span class="nav-text">文本区域检测、筛选</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#营销文本提取"><span class="nav-number">3.4.</span> <span class="nav-text">营销文本提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关键词提取"><span class="nav-number">3.4.1.</span> <span class="nav-text">关键词提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#营销文本提取-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">营销文本提取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要模型"><span class="nav-number">4.</span> <span class="nav-text">主要模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LightGBM"><span class="nav-number">4.1.</span> <span class="nav-text">LightGBM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NBSVM"><span class="nav-number">4.2.</span> <span class="nav-text">NBSVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextCNN"><span class="nav-number">4.3.</span> <span class="nav-text">TextCNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextRNN"><span class="nav-number">4.4.</span> <span class="nav-text">TextRNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextRCNN"><span class="nav-number">4.5.</span> <span class="nav-text">TextRCNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CTPN"><span class="nav-number">4.6.</span> <span class="nav-text">CTPN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型提升"><span class="nav-number">5.</span> <span class="nav-text">模型提升</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多维度融合"><span class="nav-number">5.1.</span> <span class="nav-text">多维度融合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据增强"><span class="nav-number">5.2.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面积筛选"><span class="nav-number">5.3.</span> <span class="nav-text">面积筛选</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结思考"><span class="nav-number">6.</span> <span class="nav-text">总结思考</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些思考"><span class="nav-number">6.1.</span> <span class="nav-text">一些思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sanshibayuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
