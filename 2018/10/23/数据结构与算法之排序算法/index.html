@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="LeetCode 地址：https://leetcode.com/problems/maximum-gap/description/ 题目描述给定一个未排序数组，找出排序后的元素之间的最大间隔。 要求用线性时间复杂度实现。 例如：输入为【3,6,9,1,10】，输出应为最大间隔3。">
+<meta name="description" content="总结七大排序算法，使用python实现。">
 <meta name="keywords" content="Python,Data Structure and Algorithm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode 164 数组最大间隔（O(n)复杂度实现）Python">
-<meta property="og:url" content="http://yoursite.com/2018/06/15/Leetcode 164 数组最大间隔（线性复杂度实现）Python/index.html">
+<meta property="og:title" content="数据结构与算法（2）七大排序算法">
+<meta property="og:url" content="http://yoursite.com/2018/10/23/数据结构与算法之排序算法/index.html">
 <meta property="og:site_name" content="Sanshibayuan">
-<meta property="og:description" content="LeetCode 地址：https://leetcode.com/problems/maximum-gap/description/ 题目描述给定一个未排序数组，找出排序后的元素之间的最大间隔。 要求用线性时间复杂度实现。 例如：输入为【3,6,9,1,10】，输出应为最大间隔3。">
+<meta property="og:description" content="总结七大排序算法，使用python实现。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-23T15:25:48.345Z">
+<meta property="og:updated_time" content="2018-10-25T08:06:07.006Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode 164 数组最大间隔（O(n)复杂度实现）Python">
-<meta name="twitter:description" content="LeetCode 地址：https://leetcode.com/problems/maximum-gap/description/ 题目描述给定一个未排序数组，找出排序后的元素之间的最大间隔。 要求用线性时间复杂度实现。 例如：输入为【3,6,9,1,10】，输出应为最大间隔3。">
+<meta name="twitter:title" content="数据结构与算法（2）七大排序算法">
+<meta name="twitter:description" content="总结七大排序算法，使用python实现。">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/15/Leetcode 164 数组最大间隔（线性复杂度实现）Python/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/10/23/数据结构与算法之排序算法/"/>
 
 
 
 
 
-  <title>Leetcode 164 数组最大间隔（O(n)复杂度实现）Python | Sanshibayuan</title>
+  <title>数据结构与算法（2）七大排序算法 | Sanshibayuan</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/Leetcode 164 数组最大间隔（线性复杂度实现）Python/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/23/数据结构与算法之排序算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sanshibayuan">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Leetcode 164 数组最大间隔（O(n)复杂度实现）Python</h1>
+          <h1 class="post-title" itemprop="name headline">数据结构与算法（2）七大排序算法</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T15:21:00+08:00">
-                2018-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-23T23:01:00+08:00">
+                2018-10-23
               </time>
             
 
@@ -325,29 +325,142 @@
       
 
       
-        <p>LeetCode 地址：<a href="https://leetcode.com/problems/maximum-gap/description/" target="_blank" rel="noopener">https://leetcode.com/problems/maximum-gap/description/</a></p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个未排序数组，找出排序后的元素之间的最大间隔。</p>
-<p>要求用线性时间复杂度实现。</p>
-<p>例如：输入为【3,6,9,1,10】，输出应为最大间隔3。<br><a id="more"></a></p>
-<h1 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h1><p>线性时间复杂度实现，就说明不能先对元素进行排序，因为采用此法复杂度为O(n⋅log(n))</p>
-<p>思路是采用桶排序的方法。</p>
-<p>首先，求随机数组中的最大元素 , 最小元素，为线性时间复杂度；</p>
-<p>然后，在最大元素和最小元素之间，分配（N-1）个间隔，即为N个桶（bucket）。每个桶为一个有序实数对（None,None），将每个数依次往目标桶里塞。</p>
-<p>其中，桶的上下界若已有元素（存在一个桶对应多个元素），则只需计算新元素与下界的较小值，同时计算其与上界的较大值，并将该最值作为新下界/上界即可；</p>
-<p>最后，计算每个桶的下界与下一个桶的上节的差值。差值最大值即为最大间隔。</p>
-<p>时间复杂度为O(n+b)≈O(n)</p>
-<h1 id="完整代码（Python"><a href="#完整代码（Python" class="headerlink" title="完整代码（Python)"></a>完整代码（Python)</h1><pre><code>def maximumGap(num):
-    if len(num) &lt; 2 or min(num) == max(num):
-        return 0
-    a, b = min(num), max(num)
-    size = (b-a)//(len(num)-1) or 1
-    bucket = [[None, None] for _ in range((b-a)//size+1)]
-    for n in num:
-        b = bucket[(n-a)//size]
-        b[0] = n if b[0] is None else min(b[0], n)
-        b[1] = n if b[1] is None else max(b[1], n)
-    bucket = [b for b in bucket if b[0] is not None]
-    return max(bucket[i][0]-bucket[i-1][1] for i in range(1, len(bucket)))
+        <p>总结七大排序算法，使用python实现。</p>
+<a id="more"></a>
+<h1 id="基本排序算法"><a href="#基本排序算法" class="headerlink" title="基本排序算法"></a>基本排序算法</h1><h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>每一轮迭代交换一次元素</p>
+<pre><code>def bubble_sort(seq):
+    n = len(seq)
+    for i in range(n-1):
+        for j in range(n-1-i):
+            if seq[j] &gt; seq[j+1]:
+                seq[j],seq[j+1] = seq[j+1],seq[j]
+    return seq
+</code></pre><h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><pre><code>def select_sort(seq):
+    n = len(seq)
+    for i in range(n-1):
+        min_idx = i
+        for j in range(i+1,n):
+            if seq[j]&lt;seq[min_idx]:
+                min_idx = j
+        if min_idx ! = i:
+            seq[i],seq[min_idx] = seq[min_idx],seq[i]
+    return seq
+</code></pre><h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><pre><code>def insert_sort(seq):
+    n = len(seq)
+    for i in range(1,n):
+        pos = i
+        value = seq[i]
+        while pos&gt;0 and value &lt; seq[pos-1]:
+            seq[pos] = seq[pos-1]
+            pos-=1
+        seq[pos] = value
+    return seq
+</code></pre><h1 id="高级排序算法"><a href="#高级排序算法" class="headerlink" title="高级排序算法"></a>高级排序算法</h1><h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>O(nlg(n))</p>
+<pre><code>def merge_sort(seq):
+    if len(seq)&lt;= 1:
+        return seq
+    else:
+        mid = int(len(seq)/2)
+        left_half = merge_sort(seq[:mid])
+        right_half = merge_sort(seq[mid:])
+
+        new_seq = merge_sorted_list(left_half,right_half)
+    return new_seq
+
+def merge_sorted_list(left,right): #合并有序数组
+    len_    a = len(left)
+    len_b = len(right)
+    a = b = 0
+    new = []
+    while a &lt; len_a and b &lt; len_b:
+        if left[a]&lt;right[b]:
+            new.append(left[a])
+            a += 1
+        else:
+            new.append(right[b])
+            b += 1
+    new += right[b:]
+    new += left[a:]
+    return new
+</code></pre><h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><pre><code>def quicksort(seq,left,right):
+    if left&lt;right:
+        pivot = partition(seq,left,right)
+        quicksort(seq,left,pivot)
+        quicksort(seq,pivot+1,right)
+    return seq
+
+def partition(seq,left,right):
+    array = left-1
+    pivot_index = right
+    pivot = seq[right]
+    for j in range(left,right):# 只遍历一遍
+        if seq[j]&lt;=pivot: # 比pivot小则array继续前进，同时交换元素 
+            array += 1
+            seq[j],seq[array] = seq[array],seq[j]
+    seq[array+1],seq[pivot_index] = pivot,seq[array+1]  # 把pivot放到array+1的位置
+    return array 
+</code></pre><h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><pre><code>def heap_sort(seq):
+    n = len(seq)
+    for i in range(n//2-1,-1,-1):
+        sift(seq,i,n-1)
+    for i in range(n-1,-1,-1):
+        seq[0],seq[i]= seq[i],seq[0]
+        sift(seq,0,i-1)
+        print(seq)
+    return seq
+def sift(seq,left,right):
+    i = left
+    j = 2*i+1  
+    tmp = seq[i]
+    while j&lt;= right:
+        if j&lt;right and seq[j]&lt;seq[j+1]:
+            j +=1
+        if tmp &lt;seq[j]:
+            seq[i] = seq[j]
+            i = j
+            j = 2*i+1
+        else:
+            break
+    seq[i] = tmp
+def heapSort2(alist):
+    if alist == None or len(alist) == 0:
+        return
+    length = len(alist)
+    output = []
+    for i in range(length):
+        tempLen = len(alist)
+        for j in range(tempLen//2-1, -1, -1):
+            preIndex = j
+            preVal, heap = alist[preIndex], False
+            while 2 * preIndex &lt; tempLen - 1 and not heap:
+                curIndex = 2 * preIndex + 1
+                if curIndex &lt; tempLen - 1:
+                    if alist[curIndex] &lt; alist[curIndex+1]:
+                        curIndex += 1
+                if preVal &gt;= alist[curIndex]:
+                    heap = True
+                else:
+                    alist[preIndex] = alist[curIndex]
+                    preIndex = curIndex
+            alist[preIndex] = preVal
+        output.insert(0, alist.pop(0))
+    return output
+</code></pre><h2 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h2><p>直接插入排序的升级</p>
+<pre><code>def shell_sort(seq):
+    gap = len(seq)//2
+    while gap &gt;0:
+        print(gap)
+        for i in range(gap):
+            for j in range(i+gap,len(seq),gap):
+                value = seq[j] 
+                pos = j
+                while pos&gt;=gap and seq[pos-gap]&gt;value:
+                    seq[pos] = seq[pos-gap]
+                    pos -= gap
+                seq[pos] =value 
+        gap = gap//2
+        print(seq)
+    return seq
 </code></pre>
       
     </div>
@@ -380,8 +493,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/15/OpenAI-MPE-MADDPG-配置和运行/" rel="next" title="OpenAI MPE&MADDPG 配置和运行">
-                <i class="fa fa-chevron-left"></i> OpenAI MPE&MADDPG 配置和运行
+              <a href="/2018/10/01/LeetCode 215. 数组中的第K个最大元素 O(n)/" rel="next" title="Leetcode 215 数组最大间隔（O(n)复杂度实现）Python">
+                <i class="fa fa-chevron-left"></i> Leetcode 215 数组最大间隔（O(n)复杂度实现）Python
               </a>
             
           </div>
@@ -389,10 +502,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/16/搜狐内容识别算法大赛解决方案/" rel="prev" title="搜狐内容识别算法大赛解决方案(4th)">
-                搜狐内容识别算法大赛解决方案(4th) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -535,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#题目分析"><span class="nav-number">2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码（Python"><span class="nav-number">3.</span> <span class="nav-text">完整代码（Python)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本排序算法"><span class="nav-number">1.</span> <span class="nav-text">基本排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">1.2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">1.3.</span> <span class="nav-text">插入排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级排序算法"><span class="nav-number">2.</span> <span class="nav-text">高级排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#归并排序"><span class="nav-number">2.1.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">2.2.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序"><span class="nav-number">2.3.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#希尔排序"><span class="nav-number">2.4.</span> <span class="nav-text">希尔排序</span></a></li></ol></li></ol></div>
             
 
           </div>
