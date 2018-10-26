@@ -628,7 +628,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/论文阅读之Lanenet/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/【论文阅读笔记】 Lanenet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sanshibayuan">
@@ -647,7 +647,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/论文阅读之Lanenet/" itemprop="url">论文阅读之Lanenet</a></h1>
+                <a class="post-title-link" href="/2018/08/14/【论文阅读笔记】 Lanenet/" itemprop="url">【论文阅读笔记】 LaneNet</a></h1>
         
 
         <div class="post-meta">
@@ -698,10 +698,14 @@
 
       
         
-          <p>11.<br>
+          <p>论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》<br>论文链接：<a href="https://arxiv.org/abs/1802.05591" target="_blank" rel="noopener">https://arxiv.org/abs/1802.05591</a><br>代码实现（非官方）：<a href="https://github.com/MaybeShewill-CV/lanenet-lane-detection" target="_blank" rel="noopener">https://github.com/MaybeShewill-CV/lanenet-lane-detection</a> </p>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>传统车道线检测方法主要依赖于高度专门化，手工提取特征和启发式方法来分割车道线。在传统方法中，较为常见的手工特征有基于颜色的特征、结构传感器特征、Ridge特征等，结合Hough变换或卡尔曼滤波等方法实现车道线识别。识别出车道线之后，利用后期图像处理技术过滤掉误检等情况得到最终车道线。</p>
+<p>近些年来，更为流行的方法是用深度网络提取深度特征代替手工特征，实现如像素级别的车道线分割。目前流行的深度学习车道线检测方法可以很好地分割出车道线像素，其较为大的感受野可以在标注模糊或无标注的情况下估计出大致车道线。</p>
+<p>然而这些方法产生的二值化车道线分割图仍需要分离得到不同的车道实例。为处理这个问题，一些方法采用后处理来解决，主要是用启发式的方法，比如几何特性。但启发式方法计算量大且受限于场景变化鲁棒性问题。另一条思路是将车道检测问题转为多类别分割问题，每条车道属于一类，这样能实现端到端训练出分类好的二值图像。但该方法受限于只能检测预先定义好的固定数量的车道线，无法处理车道的变化。</p>
+<p>基于此，作者提出了<strong>LaneNet</strong>模型，不仅能够得到车道线像素，还能将不同的车道线实例区分开。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/14/论文阅读之Lanenet/#more" rel="contents">
+            <a class="btn" href="/2018/08/14/【论文阅读笔记】 Lanenet/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
