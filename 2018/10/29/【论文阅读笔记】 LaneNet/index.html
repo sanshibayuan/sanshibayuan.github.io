@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/kb0pupvv9mwie370ecvobgo2/image_1cqnpbr4i1spl11ke1pvc16mqpbq20.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/k5bkxxxwlbqzdf7jwyih8l09/image_1cqo191f47p4vsf1sg21sj11ri113.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/qliryz1p5s3pdi1ie5durz7g/image_1cqo1l7951kem1jftc6u1r0g1n2g9.png">
-<meta property="og:updated_time" content="2018-11-04T03:56:29.862Z">
+<meta property="og:updated_time" content="2018-11-04T03:58:54.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文阅读笔记】 LaneNet">
 <meta name="twitter:description" content="论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591代码实现（非官方）：https://github.com/MaybeShewill-CV/lanenet-lane-detection  综述背景介绍传统车道线检测方法主要依赖">
@@ -332,9 +332,10 @@
 <h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>传统车道线检测方法主要依赖于高度专门化，手工提取特征和启发式方法来分割车道线。在传统方法中，较为常见的手工特征有基于颜色的特征、结构传感器特征、Ridge特征等，结合Hough变换或卡尔曼滤波等方法实现车道线识别。识别出车道线之后，利用后期图像处理技术过滤掉误检等情况得到最终车道线。</p>
 <p>近些年来，更为流行的方法是用深度网络提取深度特征代替手工特征，实现如像素级别的车道线分割。目前流行的深度学习车道线检测方法可以很好地分割出车道线像素，其较为大的感受野可以在标注模糊或无标注的情况下估计出大致车道线。</p>
 <p>然而这些方法产生的二值化车道线分割图仍需要分离得到不同的车道实例。为处理这个问题，一些方法采用后处理来解决，主要是用启发式的方法，比如几何特性。但启发式方法计算量大且受限于场景变化鲁棒性问题。另一条思路是将车道检测问题转为多类别分割问题，每条车道属于一类，这样能实现端到端训练出分类好的二值图像。但该方法受限于只能检测预先定义好的固定数量的车道线，无法处理车道的变化。</p>
-<p>基于此，作者提出了<strong>LaneNet</strong>模型，不仅能够得到车道线像素，还能将不同的车道线实例区分开。<br><a id="more"></a><br>得到车道线实例后，需要对每条车道线进行描述。最常用的描述方法是曲线拟合车道线模型，目前流行的曲线拟合模型有三次多项式，样条曲线，回旋曲线等。为了提高拟合质量且保持计算效率，通常我们将图像转到鸟瞰图后做拟合。最后再逆变换到原图即可。然而，目前所使用的透视变换矩阵的参数通常是预先设定、不会改变的，在面对外部地形影响（如上坡）等情况下的车道线拟合并不准确，鲁棒性不强。</p>
+<p>基于此，作者提出了<strong>LaneNet</strong>模型，不仅能够得到车道线像素，还能将不同的车道线实例区分开。</p>
+<p>得到车道线实例后，需要对每条车道线进行描述。最常用的描述方法是曲线拟合车道线模型，目前流行的曲线拟合模型有三次多项式，样条曲线，回旋曲线等。为了提高拟合质量且保持计算效率，通常我们将图像转到鸟瞰图后做拟合。最后再逆变换到原图即可。然而，目前所使用的透视变换矩阵的参数通常是预先设定、不会改变的，在面对外部地形影响（如上坡）等情况下的车道线拟合并不准确，鲁棒性不强。</p>
 <p>基于此，作者提出了<strong>H-Net</strong>模型，用来用来学习透视变换矩阵的参数。</p>
-<p>这便是这篇论文的两个创新之处，接下来将详细展开分析。</p>
+<p>这便是这篇论文的两个创新之处，接下来将详细展开分析。<br><a id="more"></a></p>
 <h3 id="总体思路"><a href="#总体思路" class="headerlink" title="总体思路"></a>总体思路</h3><p>作者提出了一个带分支结构的多任务网络结构，包含一个二值分割分支(lane segmentation)和一个实例分割分支(lane embedding)，从而实现端到端、任意数量的车道线检测。具体来说，二值分割分支输出所有的车道线像素，而实例分割分支将输出的车道线像素分配到不同的车道线实例中。</p>
 <p>论文模型的主框架如下图。<br><img src="http://static.zybuluo.com/sanshibayuan/daw845dhemvrgjjcq8wpcf5n/image_1cqo14o4i3rcej7hjvmoh1mli9.png" alt="image_1cqo14o4i3rcej7hjvmoh1mli9.png-216.3kB"></p>
 <h2 id="Lanenet网络"><a href="#Lanenet网络" class="headerlink" title="Lanenet网络"></a>Lanenet网络</h2><p>Lanenet网络结构如下图。<br><img src="http://static.zybuluo.com/sanshibayuan/z980njf9fry5va8m0ido1txs/image_1cqo158fk1c6c1s8v133219n06mvm.png" alt="image_1cqo158fk1c6c1s8v133219n06mvm.png-230.4kB"></p>
