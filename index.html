@@ -252,6 +252,271 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三十八元">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三十八元">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/" itemprop="url">【论文阅读笔记】Feature Pyramid Networks for Object Detection</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-03T11:54:00+08:00">
+                2018-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <hr>
+<p>论文名称：《Feature Pyramid Networks for Object Detection》<br>论文链接：<a href="https://arxiv.org/abs/1612.03144" target="_blank" rel="noopener">https://arxiv.org/abs/1612.03144</a><br>代码实现(非官方):<a href="https://github.com/jwyang/fpn.pytorch（Pytorch实现）" target="_blank" rel="noopener">https://github.com/jwyang/fpn.pytorch（Pytorch实现）</a></p>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四种多尺度处理方法。<br><img src="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png" alt="image_1cra44eol1fn11orh6rv1i9514rl9.png-116.9kB"><br>依次介绍一下这四张图的多尺度处理方法。</p>
+<ul>
+<li><p>特征金字塔<br>特征金字塔是在图像金字塔基础上构建构建形成的，这种方法早期使用在人工提取的特征上。随着深度学习的流行，深度卷积特征成为主流。特征金字塔结构的优势是可以产生多尺度的特征，其中每一层都是语义信息加强的，包括高分辨率的低层。但这样的方法需要很高的时间及计算量消耗，难以在实际中应用。</p>
+</li>
+<li><p>特征最上层进行预测<br>由于CNN在计算的时候本身就存在多级特征图，不同层的特征图尺度也不同，天然形成了金字塔结构，其中最上层的特征语义化程度最高，可以使用进行预测，<strong>FasterRCNN</strong>便是这个思路。但由于前后层之间不同深度影响，语义信息差距太大，高分辨率的低层特征很难有代表性的检测能力。</p>
+</li>
+<li><p>特征分层预测<br>这种方法借鉴了特征金字塔的思路，直接强行让每层分别预测对应的尺度分辨率的检测结果，<strong>SSD</strong>就采用了类似的思想。而对于CNN而言，不同深度对应着不同层次的语义特征。浅层网络分辨率高，学的更多是细节特征，深层网络分辨率低，学的更多是语义特征。这种方法对于高分辨率的底层特征没有很好地再利用，这就对小目标的检测造成了困难。</p>
+</li>
+<li><p>特征金字塔网络<br><strong>FPN</strong>的做法是：把低分辨率、高语义信息的高层特征和高分辨率、低语义信息的低层特征进行一种特殊的连接，使得所有尺度下的特征都有丰富的语义信息，再进行分层预测。这种结构是在CNN网络中完成的，和前文提到的基于图片的金字塔结构不同，而且完全可以替代它。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/29/【论文阅读笔记】 LaneNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三十八元">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三十八元">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/29/【论文阅读笔记】 LaneNet/" itemprop="url">【论文阅读笔记】 LaneNet</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T22:54:00+08:00">
+                2018-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <hr>
+<p>论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》<br>论文链接：<a href="https://arxiv.org/abs/1802.05591" target="_blank" rel="noopener">https://arxiv.org/abs/1802.05591</a><br>代码实现（非官方）：<a href="https://github.com/MaybeShewill-CV/lanenet-lane-detection" target="_blank" rel="noopener">https://github.com/MaybeShewill-CV/lanenet-lane-detection</a> </p>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>传统车道线检测方法主要依赖于高度专门化，手工提取特征和启发式方法来分割车道线。在传统方法中，较为常见的手工特征有基于颜色的特征、结构传感器特征、Ridge特征等，结合Hough变换或卡尔曼滤波等方法实现车道线识别。识别出车道线之后，利用后期图像处理技术过滤掉误检等情况得到最终车道线。</p>
+<p>近些年来，更为流行的方法是用深度网络提取深度特征代替手工特征，实现如像素级别的车道线分割。目前流行的深度学习车道线检测方法可以很好地分割出车道线像素，其较为大的感受野可以在标注模糊或无标注的情况下估计出大致车道线。</p>
+<p>然而这些方法产生的二值化车道线分割图仍需要分离得到不同的车道实例。为处理这个问题，一些方法采用后处理来解决，主要是用启发式的方法，比如几何特性。但启发式方法计算量大且受限于场景变化鲁棒性问题。另一条思路是将车道检测问题转为多类别分割问题，每条车道属于一类，这样能实现端到端训练出分类好的二值图像。但该方法受限于只能检测预先定义好的固定数量的车道线，无法处理车道的变化。</p>
+<p>基于此，作者提出了<strong>LaneNet</strong>模型，不仅能够得到车道线像素，还能将不同的车道线实例区分开。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/29/【论文阅读笔记】 LaneNet/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/23/数据结构与算法之排序算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -453,135 +718,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/01/LeetCode 215. 数组中的第K个最大元素 （O(n)复杂度实现）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/【论文阅读笔记】 LaneNet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三十八元">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三十八元">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/29/【论文阅读笔记】 LaneNet/" itemprop="url">【论文阅读笔记】 LaneNet</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T22:54:00+08:00">
-                2018-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <hr>
-<p>论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》<br>论文链接：<a href="https://arxiv.org/abs/1802.05591" target="_blank" rel="noopener">https://arxiv.org/abs/1802.05591</a><br>代码实现（非官方）：<a href="https://github.com/MaybeShewill-CV/lanenet-lane-detection" target="_blank" rel="noopener">https://github.com/MaybeShewill-CV/lanenet-lane-detection</a> </p>
-<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>传统车道线检测方法主要依赖于高度专门化，手工提取特征和启发式方法来分割车道线。在传统方法中，较为常见的手工特征有基于颜色的特征、结构传感器特征、Ridge特征等，结合Hough变换或卡尔曼滤波等方法实现车道线识别。识别出车道线之后，利用后期图像处理技术过滤掉误检等情况得到最终车道线。</p>
-<p>近些年来，更为流行的方法是用深度网络提取深度特征代替手工特征，实现如像素级别的车道线分割。目前流行的深度学习车道线检测方法可以很好地分割出车道线像素，其较为大的感受野可以在标注模糊或无标注的情况下估计出大致车道线。</p>
-<p>然而这些方法产生的二值化车道线分割图仍需要分离得到不同的车道实例。为处理这个问题，一些方法采用后处理来解决，主要是用启发式的方法，比如几何特性。但启发式方法计算量大且受限于场景变化鲁棒性问题。另一条思路是将车道检测问题转为多类别分割问题，每条车道属于一类，这样能实现端到端训练出分类好的二值图像。但该方法受限于只能检测预先定义好的固定数量的车道线，无法处理车道的变化。</p>
-<p>基于此，作者提出了<strong>LaneNet</strong>模型，不仅能够得到车道线像素，还能将不同的车道线实例区分开。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/29/【论文阅读笔记】 LaneNet/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1184,7 +1320,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

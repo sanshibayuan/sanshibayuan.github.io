@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV,Paper," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144代码实现(非官方):https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta name="keywords" content="CV,Paper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读笔记】Feature Pyramid Networks for Object Detection">
+<meta property="og:url" content="http://yoursite.com/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/index.html">
+<meta property="og:site_name" content="三十八元">
+<meta property="og:description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144代码实现(非官方):https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/my8ajmksok07lvfi411exfvt/image_1cra6jvvi16831mpk1m6t7ti11h51g.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bq6wol22bck33fkv58qc0udu/image_1cra460pv15571j4m5ap1ek65f1m.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/ef2jq4tggkgogjyfgnu0l5b5/image_1crcb4odu1bh1e021j6418svhol16.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/jid2d9yepqj3bsedvpjei3hb/image_1crcdie4n1fdn1d7o1hm1nlm1sqf9.png">
+<meta property="og:updated_time" content="2018-11-04T03:57:20.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【论文阅读笔记】Feature Pyramid Networks for Object Detection">
+<meta name="twitter:description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144代码实现(非官方):https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta name="twitter:image" content="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/"/>
+
+
+
+
+
+  <title>【论文阅读笔记】Feature Pyramid Networks for Object Detection | 三十八元</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三十八元</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/【论文阅读笔记】Feature Pyramid Networks for Object Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三十八元">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三十八元">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【论文阅读笔记】Feature Pyramid Networks for Object Detection</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-03T11:54:00+08:00">
+                2018-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>论文名称：《Feature Pyramid Networks for Object Detection》<br>论文链接：<a href="https://arxiv.org/abs/1612.03144" target="_blank" rel="noopener">https://arxiv.org/abs/1612.03144</a><br>代码实现(非官方):<a href="https://github.com/jwyang/fpn.pytorch（Pytorch实现）" target="_blank" rel="noopener">https://github.com/jwyang/fpn.pytorch（Pytorch实现）</a></p>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四种多尺度处理方法。<br><img src="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png" alt="image_1cra44eol1fn11orh6rv1i9514rl9.png-116.9kB"><br>依次介绍一下这四张图的多尺度处理方法。</p>
+<ul>
+<li><p>特征金字塔<br>特征金字塔是在图像金字塔基础上构建构建形成的，这种方法早期使用在人工提取的特征上。随着深度学习的流行，深度卷积特征成为主流。特征金字塔结构的优势是可以产生多尺度的特征，其中每一层都是语义信息加强的，包括高分辨率的低层。但这样的方法需要很高的时间及计算量消耗，难以在实际中应用。</p>
+</li>
+<li><p>特征最上层进行预测<br>由于CNN在计算的时候本身就存在多级特征图，不同层的特征图尺度也不同，天然形成了金字塔结构，其中最上层的特征语义化程度最高，可以使用进行预测，<strong>FasterRCNN</strong>便是这个思路。但由于前后层之间不同深度影响，语义信息差距太大，高分辨率的低层特征很难有代表性的检测能力。</p>
+</li>
+<li><p>特征分层预测<br>这种方法借鉴了特征金字塔的思路，直接强行让每层分别预测对应的尺度分辨率的检测结果，<strong>SSD</strong>就采用了类似的思想。而对于CNN而言，不同深度对应着不同层次的语义特征。浅层网络分辨率高，学的更多是细节特征，深层网络分辨率低，学的更多是语义特征。这种方法对于高分辨率的底层特征没有很好地再利用，这就对小目标的检测造成了困难。</p>
+</li>
+<li><p>特征金字塔网络<br><strong>FPN</strong>的做法是：把低分辨率、高语义信息的高层特征和高分辨率、低语义信息的低层特征进行一种特殊的连接，使得所有尺度下的特征都有丰富的语义信息，再进行分层预测。这种结构是在CNN网络中完成的，和前文提到的基于图片的金字塔结构不同，而且完全可以替代它。</p>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="网络具体结构"><a href="#网络具体结构" class="headerlink" title="网络具体结构"></a>网络具体结构</h2><p>首先将任意一张图片作为输入，以全卷积的方式在多个层级输出成比例大小的特征图。FPN的网络架构图如下图所示，分为<strong>自下而上的路径</strong>、<strong>自上而下的路径及横向连接</strong>。这种结构是独立于后端的CNN结构，并可以在每一层中独立完成预测。<br><img src="http://static.zybuluo.com/sanshibayuan/my8ajmksok07lvfi411exfvt/image_1cra6jvvi16831mpk1m6t7ti11h51g.png" alt="image_1cra6jvvi16831mpk1m6t7ti11h51g.png-36.2kB"></p>
+<h3 id="自下而上的路径"><a href="#自下而上的路径" class="headerlink" title="自下而上的路径"></a>自下而上的路径</h3><p>自下而上的路径实际上就是CNN的前馈计算。特征图经过卷积核计算，尺寸通常是越变越小的，也有一些特征层的输出尺寸和原来大小一样，作者把它们归为相同的<strong>网络阶段</strong>(network stage)，使用每个阶段最后一层的输出作为参考集，经过后续处理融合后建立特征金字塔。<br>具体来说，对于ResNet，作者使用了每个阶段的最后一个残差结构的特征激活输出。将这些残差模块输出表示为{C2, C3, C4, C5}，对应于conv2，conv3，conv4和conv5的输出，对应融合后的特征表示为{P2, P3, P4, P5}。</p>
+<h3 id="自上而下的路径和横向连接"><a href="#自上而下的路径和横向连接" class="headerlink" title="自上而下的路径和横向连接"></a>自上而下的路径和横向连接</h3><p>自上而下的路径将更抽象、语义信息更强的高层特征图进行了上采样，然后与前一层特征进行横向连接，使其得到加强。值得注意的是，横向连接的两层特征在空间尺寸上要相同。这样做主要是为了利用底层的定位细节信息。<br><img src="http://static.zybuluo.com/sanshibayuan/bq6wol22bck33fkv58qc0udu/image_1cra460pv15571j4m5ap1ek65f1m.png" alt="image_1cra460pv15571j4m5ap1ek65f1m.png-37.7kB"></p>
+<p>上图显示了这种连接的具体细节。首先把高层特征做<strong>2倍上采样</strong>（使用最邻近上采样法），随后将与其对应的前一层的特征经过<strong>1*1的卷积核</strong>处理，再将通道数相同的两者通过<strong>元素间的加法</strong>（elementwise sum）结合，并重复迭代该过程，直至生成最精细的特征图。最后，用<strong>3*3的卷积核</strong>去处理融合完成的特征图（为了消除<strong>上采样的混叠效应</strong>），生成最后需要的特征图。{C2, C3, C4, C5}层对应的融合特征层为{P2, P3, P4, P5}，对应的层<strong>空间尺寸</strong>是相同的。</p>
+<p>在特征金字塔网络中，所有层级<strong>共享</strong>分类层（回归层），和图像特征金字塔中所做的一样。因此需要设定所有特征图中的维度（通道数，表示为d）为定值。文章中设置d=256，因此所有额外的卷积层（比如P2）具有256通道输出。 </p>
+<h2 id="FasterRCNN中应用"><a href="#FasterRCNN中应用" class="headerlink" title="FasterRCNN中应用"></a>FasterRCNN中应用</h2><h3 id="RPN的改进"><a href="#RPN的改进" class="headerlink" title="RPN的改进"></a>RPN的改进</h3><p>RPN是Faster R-CNN中用于区域选择的子网络，它的实现是在一个13<em>13</em>256的特征图上应用9种不同尺度的anchor进行分类与回归。作者将FPN网络应用在RPN上，采用多尺度的特征图，并给每种尺度的特征图设定好对应的anchor尺寸。也就是说，作者在每一个金字塔层级应用了单尺度的anchor，{P2,P3,P4,P5,P6}$分别对应的anchor尺度为${32^2,64^2,128^2,256^2,512^2}$。改进的RPN网络中仍然使用三种比例{1:2, 1:1, 2:1}，共有15种尺寸的anchors。此外，每个层级的head都是<strong>共享参数</strong>的。</p>
+<h3 id="检测网络的改进"><a href="#检测网络的改进" class="headerlink" title="检测网络的改进"></a>检测网络的改进</h3><p>在fast RCNN中，ROI pooling操作是在同一个大小的特征图上进行的。考虑到FPN生成多尺度特征层的特性，在改进后的检测网络中，不同尺度的ROI pooling层选用了不同尺度的特征层作为输入。至于对应关系，则通过下面这个公式判别。<br><img src="http://static.zybuluo.com/sanshibayuan/ef2jq4tggkgogjyfgnu0l5b5/image_1crcb4odu1bh1e021j6418svhol16.png" alt="image_1crcb4odu1bh1e021j6418svhol16.png-20.8kB"><br>此外，由于把conv5也作为了金字塔结构的一部分，因此作者又增加两个1024维的轻量级全连接层，再接上分类器和边框回归。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><p>关于1*1卷积的作用，引用一位博主的回答3</p>
+<blockquote>
+<p>1x1的卷积我认为有三个作用：使bottom-up对应层降维至256；缓冲作用，防止梯度直接影响bottom-up主干网络，更稳定；组合特征。</p>
+</blockquote>
+</li>
+<li><p>CVPR现场对作者的提问</p>
+</li>
+</ul>
+<blockquote>
+<ol>
+<li><p>不同深度的尺度图为什么可以经过上采样后直接相加？<br>作者解释说这个原因在于我们做了端到端的训练，因为不同层的参数不是固定的，不同层同时给监督做 端到端训练，所以相加训练出来的东西能够更有效地融合浅层和深层的信息。</p>
+</li>
+<li><p>为什么 FPN 相比去掉深层特征 upsample(bottom-up pyramid) 对于小物体检测提升明显？（RPN 步骤 AR 从 30.5 到 44.9，Fast RCNN 步骤 AP 从 24.9 到 33.9） 对于小物体，一方面它提高了小目标的分辨率信息；另一方面，如图中的挎包一样，从上到下传递过来的更全局的情景信息可以更准确判断挎包的存在及位置。</p>
+</li>
+<li>如果不考虑时间情况下，image pyramid 是否可能会比 feature pyramid 的性能更高？<br>作者觉得经过精细调整训练是可能的，但是 image pyramid 主要的问题在于时间和空间占用太大，而 feature pyramid 可以在几乎不增加额外计算量情况下解决多尺度检测问题。</li>
+</ol>
+</blockquote>
+<ul>
+<li>贴一张网络结构图，更直观理解网络结构</li>
+</ul>
+<p><img src="http://static.zybuluo.com/sanshibayuan/jid2d9yepqj3bsedvpjei3hb/image_1crcdie4n1fdn1d7o1hm1nlm1sqf9.png" alt="image_1crcdie4n1fdn1d7o1hm1nlm1sqf9.png-59.9kB"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png" target="_blank" rel="noopener">1</a> <a href="https://blog.csdn.net/jesse_mx/article/details/54588085" target="_blank" rel="noopener">https://blog.csdn.net/jesse_mx/article/details/54588085</a><br><a href="http://static.zybuluo.com/sanshibayuan/my8ajmksok07lvfi411exfvt/image_1cra6jvvi16831mpk1m6t7ti11h51g.png" target="_blank" rel="noopener">2</a> <a href="https://zhuanlan.zhihu.com/p/36461718" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36461718</a><br><a href="http://static.zybuluo.com/sanshibayuan/bq6wol22bck33fkv58qc0udu/image_1cra460pv15571j4m5ap1ek65f1m.png" target="_blank" rel="noopener">3</a> <a href="https://zhuanlan.zhihu.com/p/35854548" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/35854548</a><br><a href="http://static.zybuluo.com/sanshibayuan/ef2jq4tggkgogjyfgnu0l5b5/image_1crcb4odu1bh1e021j6418svhol16.png" target="_blank" rel="noopener">4</a> <a href="https://zhuanlan.zhihu.com/p/26743074" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26743074</a><br><a href="http://static.zybuluo.com/sanshibayuan/jid2d9yepqj3bsedvpjei3hb/image_1crcdie4n1fdn1d7o1hm1nlm1sqf9.png" target="_blank" rel="noopener">5</a> <a href="https://github.com/unsky/FPN" target="_blank" rel="noopener">https://github.com/unsky/FPN</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"># CV</a>
+          
+            <a href="/tags/Paper/" rel="tag"># Paper</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/29/【论文阅读笔记】 LaneNet/" rel="next" title="【论文阅读笔记】 LaneNet">
+                <i class="fa fa-chevron-left"></i> 【论文阅读笔记】 LaneNet
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1.jpg"
+                alt="三十八元" />
+            
+              <p class="site-author-name" itemprop="name">三十八元</p>
+              <p class="site-description motion-element" itemprop="description">=。=</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/sanshibayuan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="hong_zhiyin@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#综述"><span class="nav-number">1.</span> <span class="nav-text">综述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络具体结构"><span class="nav-number">2.</span> <span class="nav-text">网络具体结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自下而上的路径"><span class="nav-number">2.1.</span> <span class="nav-text">自下而上的路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自上而下的路径和横向连接"><span class="nav-number">2.2.</span> <span class="nav-text">自上而下的路径和横向连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FasterRCNN中应用"><span class="nav-number">3.</span> <span class="nav-text">FasterRCNN中应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RPN的改进"><span class="nav-number">3.1.</span> <span class="nav-text">RPN的改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检测网络的改进"><span class="nav-number">3.2.</span> <span class="nav-text">检测网络的改进</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三十八元</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
