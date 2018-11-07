@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官方）：https://github.com/MaybeShewill-CV/lanenet-lane-detection  综述背景介绍传统车道线检测方法主要依赖">
+<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官">
 <meta name="keywords" content="CV,Paper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【论文阅读笔记】 LaneNet">
 <meta property="og:url" content="http://yoursite.com/2018/10/29/【论文阅读笔记】 LaneNet/index.html">
 <meta property="og:site_name" content="三十八元">
-<meta property="og:description" content="论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官方）：https://github.com/MaybeShewill-CV/lanenet-lane-detection  综述背景介绍传统车道线检测方法主要依赖">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/daw845dhemvrgjjcq8wpcf5n/image_1cqo14o4i3rcej7hjvmoh1mli9.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/z980njf9fry5va8m0ido1txs/image_1cqo158fk1c6c1s8v133219n06mvm.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/kb0pupvv9mwie370ecvobgo2/image_1cqnpbr4i1spl11ke1pvc16mqpbq20.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/k5bkxxxwlbqzdf7jwyih8l09/image_1cqo191f47p4vsf1sg21sj11ri113.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/qliryz1p5s3pdi1ie5durz7g/image_1cqo1l7951kem1jftc6u1r0g1n2g9.png">
-<meta property="og:updated_time" content="2018-11-04T04:11:05.264Z">
+<meta property="og:updated_time" content="2018-11-07T08:22:50.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文阅读笔记】 LaneNet">
-<meta name="twitter:description" content="论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官方）：https://github.com/MaybeShewill-CV/lanenet-lane-detection  综述背景介绍传统车道线检测方法主要依赖">
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》论文链接：https://arxiv.org/abs/1802.05591参考代码（非官">
 <meta name="twitter:image" content="http://static.zybuluo.com/sanshibayuan/daw845dhemvrgjjcq8wpcf5n/image_1cqo14o4i3rcej7hjvmoh1mli9.png">
 
 
@@ -328,6 +328,15 @@
 
       
         <hr>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 <p>论文名称：《Towards End-to-End Lane Detection an Instance Segmentation Approach》<br>论文链接：<a href="https://arxiv.org/abs/1802.05591" target="_blank" rel="noopener">https://arxiv.org/abs/1802.05591</a><br>参考代码（非官方）：<a href="https://github.com/MaybeShewill-CV/lanenet-lane-detection" target="_blank" rel="noopener">https://github.com/MaybeShewill-CV/lanenet-lane-detection</a> </p>
 <h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>传统车道线检测方法主要依赖于高度专门化，手工提取特征和启发式方法来分割车道线。在传统方法中，较为常见的手工特征有基于颜色的特征、结构传感器特征、Ridge特征等，结合Hough变换或卡尔曼滤波等方法实现车道线识别。识别出车道线之后，利用后期图像处理技术过滤掉误检等情况得到最终车道线。</p>
 <p>近些年来，更为流行的方法是用深度网络提取深度特征代替手工特征，实现如像素级别的车道线分割。目前流行的深度学习车道线检测方法可以很好地分割出车道线像素，其较为大的感受野可以在标注模糊或无标注的情况下估计出大致车道线。</p>

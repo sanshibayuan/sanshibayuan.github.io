@@ -79,23 +79,23 @@
 
 
 
-<meta name="description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/">
 <meta name="keywords" content="CV,Paper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【论文阅读笔记】Feature Pyramid Networks for Object Detection">
 <meta property="og:url" content="http://yoursite.com/2018/11/03/【论文阅读笔记】 Feature Pyramid Networks for Object Detection/index.html">
 <meta property="og:site_name" content="三十八元">
-<meta property="og:description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/my8ajmksok07lvfi411exfvt/image_1cra6jvvi16831mpk1m6t7ti11h51g.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bq6wol22bck33fkv58qc0udu/image_1cra460pv15571j4m5ap1ek65f1m.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/ef2jq4tggkgogjyfgnu0l5b5/image_1crcb4odu1bh1e021j6418svhol16.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/jid2d9yepqj3bsedvpjei3hb/image_1crcdie4n1fdn1d7o1hm1nlm1sqf9.png">
-<meta property="og:updated_time" content="2018-11-04T04:10:50.898Z">
+<meta property="og:updated_time" content="2018-11-07T08:22:57.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文阅读笔记】Feature Pyramid Networks for Object Detection">
-<meta name="twitter:description" content="论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/jwyang/fpn.pytorch（Pytorch实现） 综述多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四">
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      论文名称：《Feature Pyramid Networks for Object Detection》论文链接：https://arxiv.org/abs/1612.03144参考代码(非官方)：https://github.com/">
 <meta name="twitter:image" content="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png">
 
 
@@ -327,6 +327,15 @@
 
       
         <hr>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 <p>论文名称：《Feature Pyramid Networks for Object Detection》<br>论文链接：<a href="https://arxiv.org/abs/1612.03144" target="_blank" rel="noopener">https://arxiv.org/abs/1612.03144</a><br>参考代码(非官方)：<a href="https://github.com/jwyang/fpn.pytorch（Pytorch实现）" target="_blank" rel="noopener">https://github.com/jwyang/fpn.pytorch（Pytorch实现）</a></p>
 <h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>多尺度目标检测是计算机视觉领域的一个基础且具挑战性的课题，尤其是在目标检测方面。下图是目前常用的四种多尺度处理方法。</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/fuhro3s0zz46ip8i84ynj39s/image_1cra44eol1fn11orh6rv1i9514rl9.png" alt="image_1cra44eol1fn11orh6rv1i9514rl9.png-116.9kB"><br>依次介绍一下这四张图的多尺度处理方法。<br><a id="more"></a></p>
