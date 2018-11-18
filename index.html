@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/18/【论文阅读笔记】 Deformable Convolutional Networks/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/18/目标检测（Object Detection）学习笔记（上） /">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三十八元">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/18/【论文阅读笔记】 Deformable Convolutional Networks/" itemprop="url">目标检测（Object Detection）学习笔记（上）</a></h1>
+                <a class="post-title-link" href="/2018/11/18/目标检测（Object Detection）学习笔记（上） /" itemprop="url">目标检测（Object Detection）学习笔记（上）</a></h1>
         
 
         <div class="post-meta">
@@ -322,8 +322,7 @@
 
       
         
-          
-            <hr>
+          <hr>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -331,10 +330,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </script>
 
 <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"><br></script></p>
-<h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p>随着深度学习技术的火热发展，目标检测算法也从基于手工特征的传统算法转向了基于深度神经网络的检测技术。从最初 2013 年提出的 R-CNN、OverFeat，到后面的 Fast/Faster R-CNN、SSD、YOLO 系列，以及Mask R-CNN、RefineDet、RFBNet等(见下图,完整论文列表参见<a href="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" target="_blank" rel="noopener">1</a>)。短短不到五年时间，基于深度学习的目标检测技术，在网络结构上，从 two-stage 到 one-stage，从 bottom-up only 到 Top-Down，从 single scale network 到 feature pyramid network，从面向 PC 端到面向移动端，都涌现出许多好的算法技术，这些算法在开放目标检测数据集上的检测效果和性能都很出色。</p>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><h3 id="发展现状"><a href="#发展现状" class="headerlink" title="发展现状"></a>发展现状</h3><p>随着深度学习技术的火热发展，目标检测算法也从基于手工特征的传统算法转向了基于深度神经网络的检测技术。从最初 2013 年提出的 R-CNN、OverFeat，到后面的 Fast/Faster R-CNN、SSD、YOLO 系列，以及Mask R-CNN、RefineDet、RFBNet等(见下图,完整论文列表参见<a href="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" target="_blank" rel="noopener">1</a>)。短短不到五年时间，基于深度学习的目标检测技术，在网络结构上，从 two-stage 到 one-stage，从 bottom-up only 到 Top-Down，从 single scale network 到 feature pyramid network，从面向 PC 端到面向移动端，都涌现出许多好的算法技术，这些算法在开放目标检测数据集上的检测效果和性能都很出色。</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" alt="image_1csdgmgeg8q9ajg1pek2pi1elmm.png-248.9kB"></p>
-<p>目标检测任务可分为两个关键的子任务：目标分类和目标定位。目标分类任务负责判断输入图像或所选择图像区域（Proposals）中是否有感兴趣类别的物体出现，输出一系列带分数的标签表明感兴趣类别的物体出现在输入图像或所选择图像区域（Proposals）中的可能性。目标定位任务负责确定输入图像或所选择图像区域（Proposals）中感兴趣类别的物体的位置和范围，输出物体的包围盒、或物体中心、或物体的闭合边界等，通常使用方形包围盒，即Bounding Box用来表示物体的位置信息。</p>
-<p>基于以上两个子任务，现代目标检测技术的流程基本可以分为如下步骤，</p>
+<h3 id="关键任务"><a href="#关键任务" class="headerlink" title="关键任务"></a>关键任务</h3><p>目标检测任务可分为两个关键的子任务：目标分类和目标定位。目标分类任务负责判断输入图像或所选择图像区域（Proposals）中是否有感兴趣类别的物体出现，输出一系列带分数的标签表明感兴趣类别的物体出现在输入图像或所选择图像区域（Proposals）中的可能性。目标定位任务负责确定输入图像或所选择图像区域（Proposals）中感兴趣类别的物体的位置和范围，输出物体的包围盒、或物体中心、或物体的闭合边界等，通常使用方形包围盒，即Bounding Box用来表示物体的位置信息。</p>
+<h3 id="检测流程"><a href="#检测流程" class="headerlink" title="检测流程"></a>检测流程</h3><p>基于以上两个子任务，现代目标检测技术的流程基本可以分为如下步骤，</p>
 <ul>
 <li>输入图像；</li>
 <li>Backbone主干网络，用以提取图片特征；</li>
@@ -342,28 +341,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <li>Postprocess后处理，使用NMS等手段优化结果</li>
 </ul>
 <p><img src="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png" alt="image_1csi9f0aag8l1i9m14c8dhp2k89.png-84.7kB"></p>
-<p>目标检测框架大致分为两大类，第一是two-stage 框架，先进行proposal区域生成，再进行目标分类；另一个是one-stage, end to end的框架，只使用一个网络中直接输出结果。一般来讲，one-stage 检测器的 recall 较高，但是 localization 会有所折衷；相反， two-stage 检测器的定位能力则较强，但是 recall 较低，主要原因是第二个 stage 可以 refine 框的精度，但是也会误杀一些正样本。之前的普遍观点是 one-stage 检测器往往更快，比如 YOLO、SSD； two-stage 检测器往往更准，比如 Faster R-CNN、FPN，但从最新的进展来看，这两种方法的区别已经不大。</p>
-<p>这篇笔记将简单记录下个人对两种检测框架的几种经典模型（包括<strong>FasterRCNN</strong>，<strong>YOLO</strong>、<strong>SSD</strong>等）的总结和理解，作为今后进一步研究的基础。</p>
-<h2 id="FasterRCNN"><a href="#FasterRCNN" class="headerlink" title="FasterRCNN"></a>FasterRCNN</h2><p>比如Faster R-CNN，其利用深度卷积网络作为Backbone，并从原始图像中抽取一张特征图。随后根据RPN输出的候选框截取主干网络输出的特征图，并作RoI池化得到最终的Head；而最后一个后处理过程NMS则搜索局部极大值、抑制非极大值元素。</p>
-<p>FasterRCNN 基于RCNN和FastRCNN改进，是在2016年nips上提出的模型。它将特征抽取，proposal提取，都整合在了一个网络中，具体结构如图1所示。<br><img src="http://static.zybuluo.com/sanshibayuan/hz30g7sq9npcnfeldaogh0nj/image_1csdo1l19uut1ald36nvam1a7a9.png" alt="FasterRCNN网络结构图"></p>
-<p><img src="http://static.zybuluo.com/sanshibayuan/vcnw3pyf94oq2a6xel3ivdcq/image_1csfjrkh6ppffi21q5uj9i5s4m.png" alt="Faster R-CNN整体架构"><br>FasterRCNN可以分为以下四个部分</p>
-<p>Conv layers提取特征–&gt;RPN提取产生proposal–&gt;ROI pooling–&gt;bounding box regression&amp;classification<br>ROIhead = ROI pooling + bounding box regression&amp;classification</p>
-<h3 id="深度卷积网络"><a href="#深度卷积网络" class="headerlink" title="深度卷积网络"></a>深度卷积网络</h3><p>即backbone。<br>传统操作，用来提取图片的feature<br>map，该卷积层后续被RPN和分类层<strong>共享</strong>。</p>
-<h3 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h3><p>论文的创新点，用来生成region proposal，并分别判断</p>
-<ul>
-<li>引进了anchor</li>
-<li>RPN</li>
-<li>Translation-Invariant</li>
-<li>multi-scale</li>
-<li>loss</li>
-<li>RPN训练</li>
-<li>4-Step Alternating Training</li>
-<li>实现细节</li>
-<li>ROI pooling<br><img src="http://static.zybuluo.com/sanshibayuan/simmcxrx684oigs8vcvjhic7/image_1csdgd6ra1tvcklv3271hq61hrj9.png" alt="image_1csdgd6ra1tvcklv3271hq61hrj9.png-334kB"></li>
-</ul>
-<h3 id="ROI-pooling"><a href="#ROI-pooling" class="headerlink" title="ROI pooling"></a>ROI pooling</h3><h3 id="classifier"><a href="#classifier" class="headerlink" title="classifier"></a>classifier</h3><h1 id="YOLO"><a href="#YOLO" class="headerlink" title="YOLO"></a>YOLO</h1><h1 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h1><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" target="_blank" rel="noopener">1</a> <a href="https://github.com/hoya012/deep_learning_object_detection" target="_blank" rel="noopener">https://github.com/hoya012/deep_learning_object_detection</a></p>
-
-          
+<h3 id="检测框架"><a href="#检测框架" class="headerlink" title="检测框架"></a>检测框架</h3><p>目标检测框架大致分为两大类，第一是two-stage 框架，先进行proposal区域生成，再进行目标分类；另一个是one-stage, end to end的框架，只使用一个网络中直接输出结果。一般来讲，one-stage 检测器的 recall 较高，但是 localization 会有所折衷；相反， two-stage 检测器的定位能力则较强，但是 recall 较低，主要原因是第二个 stage 可以 refine 框的精度，但是也会误杀一些正样本。之前的普遍观点是 one-stage 检测器往往更快，比如 YOLO、SSD； two-stage 检测器往往更准，比如 Faster R-CNN、FPN，但从最新的进展来看，这两种方法的区别已经不大。<br>这篇笔记将简单记录下个人对两种检测框架的几种经典模型（包括<strong>FasterRCNN</strong>，<strong>YOLO</strong>、<strong>SSD</strong>等）的总结和理解，作为今后进一步研究的基础。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/18/目标检测（Object Detection）学习笔记（上） /#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -637,257 +622,6 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/29/【论文阅读笔记】 LaneNet/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/23/数据结构与算法之排序算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三十八元">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三十八元">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/23/数据结构与算法之排序算法/" itemprop="url">七大排序算法的Python实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-23T23:01:00+08:00">
-                2018-10-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>总结七大排序算法，使用python实现。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/23/数据结构与算法之排序算法/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/01/LeetCode 215. 数组中的第K个最大元素 （O(n)复杂度实现）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三十八元">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三十八元">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/01/LeetCode 215. 数组中的第K个最大元素 （O(n)复杂度实现）/" itemprop="url">Leetcode 215 数组最大间隔（O(n)复杂度实现）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-01T21:21:00+08:00">
-                2018-10-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>LeetCode 地址：<a href="https://leetcode-cn.com/problems/kth-largest-element-in-an-array/description/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/kth-largest-element-in-an-array/description/</a></p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>在未排序的数组中找到第 k 个最大的元素。</p>
-<p>如:<br>输入: [3,2,1,5,6,4] 和 k = 2<br>输出: 5</p>
-<p>要求用线性时间复杂度实现。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/01/LeetCode 215. 数组中的第K个最大元素 （O(n)复杂度实现）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1213,133 +947,6 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/Leetcode 164 数组最大间隔（O(n)复杂度实现）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三十八元">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三十八元">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/15/Leetcode 164 数组最大间隔（O(n)复杂度实现）/" itemprop="url">Leetcode 164 数组最大间隔（O(n)复杂度实现）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T15:21:00+08:00">
-                2018-06-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>LeetCode 地址：<a href="https://leetcode.com/problems/maximum-gap/description/" target="_blank" rel="noopener">https://leetcode.com/problems/maximum-gap/description/</a></p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个未排序数组，找出排序后的元素之间的最大间隔。</p>
-<p>要求用线性时间复杂度实现。</p>
-<p>例如：输入为【3,6,9,1,10】，输出应为最大间隔3。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/15/Leetcode 164 数组最大间隔（O(n)复杂度实现）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/OpenAI-MPE-MADDPG-配置和运行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1502,7 +1109,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
