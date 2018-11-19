@@ -1,1 +1,1 @@
-http://yoursite.com/2018/11/18/目标检测（Object Detection）学习笔记（上） /
+http://yoursite.com/2018/11/18/目标检测（Object Detection）学习笔记（三） 各种技巧/
