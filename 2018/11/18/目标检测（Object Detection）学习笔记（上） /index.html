@@ -93,12 +93,12 @@
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/vcnw3pyf94oq2a6xel3ivdcq/image_1csfjrkh6ppffi21q5uj9i5s4m.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/77odeosxmx324x50fr0qw4jw/image_1csiiktj7jvikr15ko133l10dkm.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/simmcxrx684oigs8vcvjhic7/image_1csdgd6ra1tvcklv3271hq61hrj9.png">
-<meta property="og:image" content="https://zhuanlan.zhihu.com/p/31427164">
+<meta property="og:image" content="c:/Users/hong/AppData/Roaming/Typora/typora-user-images/1542619089143.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bvb12rhk7uqgohej5hhj1p11/image_1csj0bkaj1ib49vhhnm1j5grcjp.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bvb12rhk7uqgohej5hhj1p11/image_1csj0bkaj1ib49vhhnm1j5grcjp.png">
-<meta property="og:updated_time" content="2018-11-18T12:45:31.693Z">
+<meta property="og:updated_time" content="2018-11-19T09:18:14.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测（Object Detection）学习笔记（上）">
 <meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });     综述发展现状随着深度学习技术的火热发展，目标检测算法也从基于手工特征的传统算法转向了基于深度神经网络的检测技术。从最初 2013 年提出的 R-CNN、OverFeat，到后面的 Fast/Faster R-CNN、SSD、YOLO 系列">
@@ -353,6 +353,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </ul>
 <p><img src="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png" alt="image_1csi9f0aag8l1i9m14c8dhp2k89.png-84.7kB"></p>
 <h3 id="检测框架"><a href="#检测框架" class="headerlink" title="检测框架"></a>检测框架</h3><p>目标检测框架大致分为两大类，第一是two-stage 框架，先进行proposal区域生成，再进行目标分类；另一个是one-stage, end to end的框架，只使用一个网络中直接输出结果。一般来讲，one-stage 检测器的 recall 较高，但是 localization 会有所折衷；相反， two-stage 检测器的定位能力则较强，但是 recall 较低，主要原因是第二个 stage 可以 refine 框的精度，但是也会误杀一些正样本。之前的普遍观点是 one-stage 检测器往往更快，比如 YOLO、SSD； two-stage 检测器往往更准，比如 Faster R-CNN、FPN，但从最新的进展来看，这两种方法的区别已经不大。<br>这篇笔记将简单记录下个人对两种检测框架的几种经典模型（包括<strong>FasterRCNN</strong>，<strong>YOLO</strong>、<strong>SSD</strong>等）的总结和理解，作为今后进一步研究的基础。</p>
+<a id="more"></a>
 <h2 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h2><p>Faster R-CNN是two-stage检测框架的代表作，在各大竞赛的排行榜上，以它为基础的变体都占据着统治地位。Faster R-CNN的网络结构图如下图：</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/hz30g7sq9npcnfeldaogh0nj/image_1csdo1l19uut1ald36nvam1a7a9.png" alt="FasterRCNN网络结构图"></p>
 <p>按照流程来说，Faster R-CNN的整体架构可以看下图（以VGG为例）：</p>
@@ -372,7 +373,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p><img src="http://static.zybuluo.com/sanshibayuan/simmcxrx684oigs8vcvjhic7/image_1csdgd6ra1tvcklv3271hq61hrj9.png" alt="Faster R-CNN的loss构成"></p>
 <p>论文和代码的细节不在这里多费笔墨，可以参考<a href="https://zhuanlan.zhihu.com/p/31426458" target="_blank" rel="noopener">一文读懂Faster RCNN -白裳</a>和<a href="https://zhuanlan.zhihu.com/p/32404424" target="_blank" rel="noopener">从编程实现角度学习Faster R-CNN（附极简实现）-陈云</a>，他们的解析对我的理解帮助很大。</p>
 <h2 id="YOLO系列"><a href="#YOLO系列" class="headerlink" title="YOLO系列"></a>YOLO系列</h2><h3 id="YOLO-v1"><a href="#YOLO-v1" class="headerlink" title="YOLO-v1"></a>YOLO-v1</h3><p>YOLO全称You Only Look Once: Unified, Real-Time Object Detection，它是一种one-stage、end to end的检测方法，它与Faster RCNN的区别可以见下图：</p>
-<p><img src="https://zhuanlan.zhihu.com/p/31427164" alt="image_1csjbna3947t1arg159pagmgk11p.png-103.3kB"></p>
+<p><img src="C:\Users\hong\AppData\Roaming\Typora\typora-user-images\1542619089143.png" alt="1542619089143"></p>
 <p>简单来说，YOLO将整个检测问题整合为一个回归问题，使得网络结构简单，检测速度大大加快；由于网络没有分支，所以训练也只需要一次即可完成。这种“把检测转化为回归问题”的思路非常有效，之后的很多检测算法（包括SSD）都借鉴了此思路。</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png" alt="image_1csjbq4iuapv4461ibp1snn9sf26.png-321.2kB"></p>
 <p>如上图所示，YOLO的检测流程简单概述如下：</p>
@@ -405,8 +406,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </ul>
 <p>YOLO-v3中的改进有以下几点：</p>
 <ul>
-<li>使用残差模型</li>
-<li>采用FPN架构</li>
+<li>Resnet</li>
+<li>FPN</li>
 </ul>
 <h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2><p>SSD(Single Shot MultiBox Detector)是one-stage检测框架的一种，在准确度和速度上比同一时期同为one-stage的Yolo和two-stage的Faster R-CNN要好很多。SSD的网络结构图如下图所示：<br><img src="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png" alt="image_1csijnk2p19t41pp3lsm1pga1smh1t.png-236.5kB"></p>
 <p>下图显示了不同算法的基本框架图，对于Faster R-CNN，其先通过CNN得到候选框，然后再进行分类与回归，而Yolo与SSD可以一步到位完成检测。相比SSD提取了<strong>不同尺度的特征图</strong>来做检测，大尺度特征图（较靠前的特征图）可以用来检测小物体，而小尺度特征图（较靠后的特征图）用来检测大物体；SSD中同样采用了不同尺度和长宽比的<strong>先验框</strong>（Prior boxes, Default boxes，在Faster R-CNN中叫做锚，Anchors）；相比Yolo，SSD采用<strong>卷积</strong>来直接进行检测，而不是像Yolo那样在<strong>全连接层</strong>之后做检测。</p>
