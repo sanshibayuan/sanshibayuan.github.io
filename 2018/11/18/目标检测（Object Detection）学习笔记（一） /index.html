@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/r4nla3z47in7412fgrmr3nf8/image_1csq7cjhalliu431u4h1mv21kfb9.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png">
-<meta property="og:updated_time" content="2018-11-21T05:26:18.805Z">
+<meta property="og:updated_time" content="2018-11-21T05:36:02.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测（Object Detection）学习笔记（一）综述">
 <meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇学习笔记内容包括以下内容：  发展现状 关键任务 评价指标 常用数据集 检测流程 检测框架">
@@ -359,7 +359,91 @@
 <li>计算所有类别，平均，得到mAP。</li>
 </ul>
 <p>对于目标检测，mAP一般在某个固定的IoU上计算，但是不同的IoU值会改变TP和FP的比例，从而造成mAP的差异。COCO数据集提供了官方的评估指标，它的AP是计算<strong>一系列IoU</strong>下（0.5:0.05:0.9，见说明）AP的平均值，这样可以消除IoU导致的AP波动。其实对于PASCAL VOC数据集也是这样，Facebook的Detectron上的有比较清晰的实现。</p>
-<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a href="https://www.zhihu.com/question/53405779" target="_blank" rel="noopener">目标检测中的mAP是什么含义？-知乎</a><br><a href="https://github.com/rafaelpadilla/Object-Detection-Metrics" target="_blank" rel="noopener">Metrics for object detection -github</a></p>
+<h4 id="参考代码（Detectron）"><a href="#参考代码（Detectron）" class="headerlink" title="参考代码（Detectron）"></a>参考代码（Detectron）</h4><p>Precision和recall的计算:</p>
+<pre><code># 按照置信度降序排序
+sorted_ind = np.argsort(-confidence)
+BB = BB[sorted_ind, :]   # 预测框坐标
+image_ids = [image_ids[x] for x in sorted_ind] # 各个预测框的对应图片id
+
+# 便利预测框，并统计TPs和FPs
+nd = len(image_ids)
+tp = np.zeros(nd)
+fp = np.zeros(nd)
+for d in range(nd):
+    R = class_recs[image_ids[d]]
+    bb = BB[d, :].astype(float)
+    ovmax = -np.inf
+    BBGT = R[&apos;bbox&apos;].astype(float)  # ground truth
+
+    if BBGT.size &gt; 0:
+        # 计算IoU
+        # intersection
+        ixmin = np.maximum(BBGT[:, 0], bb[0])
+        iymin = np.maximum(BBGT[:, 1], bb[1])
+        ixmax = np.minimum(BBGT[:, 2], bb[2])
+        iymax = np.minimum(BBGT[:, 3], bb[3])
+        iw = np.maximum(ixmax - ixmin + 1., 0.)
+        ih = np.maximum(iymax - iymin + 1., 0.)
+        inters = iw * ih
+
+        # union
+        uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
+               (BBGT[:, 2] - BBGT[:, 0] + 1.) *
+               (BBGT[:, 3] - BBGT[:, 1] + 1.) - inters)
+
+        overlaps = inters / uni
+        ovmax = np.max(overlaps)
+        jmax = np.argmax(overlaps)
+    # 取最大的IoU
+    if ovmax &gt; ovthresh:  # 是否大于阈值
+        if not R[&apos;difficult&apos;][jmax]:  # 非difficult物体
+            if not R[&apos;det&apos;][jmax]:    # 未被检测
+                tp[d] = 1.
+                R[&apos;det&apos;][jmax] = 1    # 标记已被检测
+            else:
+                fp[d] = 1.
+    else:
+        fp[d] = 1.
+
+# 计算precision recall
+fp = np.cumsum(fp)
+tp = np.cumsum(tp)
+rec = tp / float(npos)
+# avoid divide by zero in case the first detection matches a difficult
+# ground truth
+prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
+</code></pre><p>这里最终得到一系列的precision和recall值，并且这些值是按照置信度降低排列统计的，可以认为是取不同的置信度阈值（或者rank值）得到的。然后据此可以计算AP：</p>
+<pre><code>def voc_ap(rec, prec, use_07_metric=False):
+    &quot;&quot;&quot;Compute VOC AP given precision and recall. If use_07_metric is true, uses
+    the VOC 07 11-point method (default:False).
+    &quot;&quot;&quot;
+    if use_07_metric:  # 使用07年方法
+        # 11 个点
+        ap = 0.
+        for t in np.arange(0., 1.1, 0.1):
+            if np.sum(rec &gt;= t) == 0:
+                p = 0
+            else:
+                p = np.max(prec[rec &gt;= t])  # 插值
+            ap = ap + p / 11.
+    else:  # 新方式，计算所有点
+        # correct AP calculation
+        # first append sentinel values at the end
+        mrec = np.concatenate(([0.], rec, [1.]))
+        mpre = np.concatenate(([0.], prec, [0.]))
+
+        # compute the precision 曲线值（也用了插值）
+        for i in range(mpre.size - 1, 0, -1):
+            mpre[i - 1] = np.maximum(mpre[i - 1], mpre[i])
+
+        # to calculate area under PR curve, look for points
+        # where X axis (recall) changes value
+        i = np.where(mrec[1:] != mrec[:-1])[0]
+
+        # and sum (\Delta recall) * prec
+        ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
+    return ap
+</code></pre><h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a href="https://www.zhihu.com/question/53405779" target="_blank" rel="noopener">目标检测中的mAP是什么含义？-知乎</a><br><a href="https://github.com/rafaelpadilla/Object-Detection-Metrics" target="_blank" rel="noopener">Metrics for object detection -github</a><br><a href="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png" target="_blank" rel="noopener">目标检测模型的评估指标mAP详解(附代码</a><a href="https://github.com/rafaelpadilla/Object-Detection-Metrics" target="_blank" rel="noopener">4</a></p>
 <h3 id="FPS"><a href="#FPS" class="headerlink" title="FPS"></a>FPS</h3><p>除了检测准确度，目标检测算法的另外一个重要性能指标是速度，只有速度快，才能实现实时检测，这对一些应用场景极其重要。评估速度的常用指标是每秒帧率（Frame Per Second，FPS），即每秒内可以处理的图片数量。当然要对比FPS，你需要在同一硬件上进行。另外也可以使用处理一张图片所需时间来评估检测速度，时间越短，速度越快。</p>
 <h2 id="常用数据集"><a href="#常用数据集" class="headerlink" title="常用数据集"></a>常用数据集</h2><p>目标检测常用的数据集包括PASCAL VOC，ImageNet，MS COCO等数据集，这些数据集用于研究者测试算法性能或者用于竞赛。</p>
 <h3 id="PASCAL-VOC"><a href="#PASCAL-VOC" class="headerlink" title="PASCAL VOC"></a>PASCAL VOC</h3><p>PASCAL VOC（The PASCAL Visual Object Classification）是目标检测，分类，分割等领域一个有名的数据集。从2005到2012年，共举办了8个不同的挑战赛。PASCAL VOC包含约10,000张带有边界框的图片用于训练和验证。但是，PASCAL VOC数据集仅包含20个类别，因此其被看成目标检测问题的一个基准数据集。</p>
@@ -559,7 +643,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发展现状"><span class="nav-number">1.</span> <span class="nav-text">发展现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键任务"><span class="nav-number">2.</span> <span class="nav-text">关键任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价指标"><span class="nav-number">3.</span> <span class="nav-text">评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IoU"><span class="nav-number">3.1.</span> <span class="nav-text">IoU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mAP"><span class="nav-number">3.2.</span> <span class="nav-text">mAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP定义及相关概念"><span class="nav-number">3.2.1.</span> <span class="nav-text">mAP定义及相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP计算步骤"><span class="nav-number">3.2.2.</span> <span class="nav-text">mAP计算步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考链接"><span class="nav-number">3.2.3.</span> <span class="nav-text">参考链接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPS"><span class="nav-number">3.3.</span> <span class="nav-text">FPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用数据集"><span class="nav-number">4.</span> <span class="nav-text">常用数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PASCAL-VOC"><span class="nav-number">4.1.</span> <span class="nav-text">PASCAL VOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet"><span class="nav-number">4.2.</span> <span class="nav-text">ImageNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#COCO"><span class="nav-number">4.3.</span> <span class="nav-text">COCO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测流程"><span class="nav-number">5.</span> <span class="nav-text">检测流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测框架"><span class="nav-number">6.</span> <span class="nav-text">检测框架</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发展现状"><span class="nav-number">1.</span> <span class="nav-text">发展现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键任务"><span class="nav-number">2.</span> <span class="nav-text">关键任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价指标"><span class="nav-number">3.</span> <span class="nav-text">评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IoU"><span class="nav-number">3.1.</span> <span class="nav-text">IoU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mAP"><span class="nav-number">3.2.</span> <span class="nav-text">mAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP定义及相关概念"><span class="nav-number">3.2.1.</span> <span class="nav-text">mAP定义及相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP计算步骤"><span class="nav-number">3.2.2.</span> <span class="nav-text">mAP计算步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考代码（Detectron）"><span class="nav-number">3.2.3.</span> <span class="nav-text">参考代码（Detectron）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考链接"><span class="nav-number">3.2.4.</span> <span class="nav-text">参考链接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPS"><span class="nav-number">3.3.</span> <span class="nav-text">FPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用数据集"><span class="nav-number">4.</span> <span class="nav-text">常用数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PASCAL-VOC"><span class="nav-number">4.1.</span> <span class="nav-text">PASCAL VOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet"><span class="nav-number">4.2.</span> <span class="nav-text">ImageNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#COCO"><span class="nav-number">4.3.</span> <span class="nav-text">COCO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测流程"><span class="nav-number">5.</span> <span class="nav-text">检测流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测框架"><span class="nav-number">6.</span> <span class="nav-text">检测框架</span></a></li></ol></div>
             
 
           </div>
