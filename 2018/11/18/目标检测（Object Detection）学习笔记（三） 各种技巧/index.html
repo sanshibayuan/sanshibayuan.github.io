@@ -79,18 +79,24 @@
 
 
 
-<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       本篇笔记包括对目标检测中的一些performance提升的方法技巧的介绍，包括：  OHEM deformable conv Focal Loss SoftNMS  不断更新ing…">
+<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对目标检测中的一些提升的方法技巧的介绍，包括：  Data Augmentation OHEM Deformable Conv Focal Loss SoftNMS  不断更新ing…">
 <meta name="keywords" content="CV">
 <meta property="og:type" content="article">
 <meta property="og:title" content="目标检测（Object Detection）学习笔记（三）各种技巧">
 <meta property="og:url" content="http://yoursite.com/2018/11/18/目标检测（Object Detection）学习笔记（三） 各种技巧/index.html">
 <meta property="og:site_name" content="三十八元">
-<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       本篇笔记包括对目标检测中的一些performance提升的方法技巧的介绍，包括：  OHEM deformable conv Focal Loss SoftNMS  不断更新ing…">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对目标检测中的一些提升的方法技巧的介绍，包括：  Data Augmentation OHEM Deformable Conv Focal Loss SoftNMS  不断更新ing…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-19T15:02:12.006Z">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/mccodlnhyanwxe09t35x1qg3/image_1csqb5pke8ij1v8jg09frt1je237.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/oenkmnck36mjumbnach9iwka/image_1csqb6leu7ql1eh71bqv1jjlanj3k.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/7mpibgkp0n33gyu04q5nsa5g/image_1csqa6d6h1nufjef137j5uh1jo39.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/wgb1l9l35gchstmecix3hy73/image_1csqb1k8u1r7ipbp1s9dkdd1rot2d.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/lf09xkovwsx011roituiaxlg/image_1csqb0l4dpp4aa1aledfj1jqu20.png">
+<meta property="og:updated_time" content="2018-11-21T05:24:26.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测（Object Detection）学习笔记（三）各种技巧">
-<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       本篇笔记包括对目标检测中的一些performance提升的方法技巧的介绍，包括：  OHEM deformable conv Focal Loss SoftNMS  不断更新ing…">
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对目标检测中的一些提升的方法技巧的介绍，包括：  Data Augmentation OHEM Deformable Conv Focal Loss SoftNMS  不断更新ing…">
+<meta name="twitter:image" content="http://static.zybuluo.com/sanshibayuan/mccodlnhyanwxe09t35x1qg3/image_1csqb5pke8ij1v8jg09frt1je237.png">
 
 
 
@@ -330,16 +336,35 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </script>
 
 
-
-<p>本篇笔记包括对目标检测中的一些performance提升的方法技巧的介绍，包括：</p>
+<p>本篇笔记包括对目标检测中的一些提升的方法技巧的介绍，包括：</p>
 <ul>
+<li>Data Augmentation</li>
 <li>OHEM</li>
-<li>deformable conv</li>
+<li>Deformable Conv</li>
 <li>Focal Loss</li>
 <li>SoftNMS</li>
 </ul>
-<p>不断更新ing…</p>
-<a id="more"></a>
+<p>不断更新ing…<br><a id="more"></a></p>
+<h2 id="Data-Augmentation"><a href="#Data-Augmentation" class="headerlink" title="Data Augmentation"></a>Data Augmentation</h2><p>Data Augmentation即数据增强，可以用来增加数据集的数量和多样性，从而提升算法的最终效果。常见的对图像进行的数据增强方法包括Horizontal Flip（水平翻转）、Scaling（缩放）、Translation（平移）、Rotation（旋转）、Shearing（裁剪）、Resizing等，此外还有亮度、饱和度、对比度的变换、颜色变换、加噪声扰动、模糊处理等。</p>
+<h2 id="OHEM"><a href="#OHEM" class="headerlink" title="OHEM"></a>OHEM</h2><p>OHEM全称online hard example mining，简单来说，就是对所有RoIs的损失进行评估，选择那些loss大的样本来优化网络，而不是简单的采样。</p>
+<ul>
+<li>前向传播 Forward: 全部的ROI通过网络，根据loss排序; </li>
+<li>反向传播 Backward：根据排序，选择B/N个loss值最大的（worst）样本来后向传播更新model的weights. </li>
+</ul>
+<p>这里会有一个问题，即位置相近的ROI在map中可能对应的是同一个位置，loss值是相近的，所以针对这个问题，提出的解决方法是：对hard examples做nms，然后再选择B/N个ROI反向传播。</p>
+<h2 id="Deformable-Conv"><a href="#Deformable-Conv" class="headerlink" title="Deformable Conv"></a>Deformable Conv</h2><p>Deformable convolution即可形变卷积。CNN的传统卷积比较死板，对物体的几何变换没有很好的适应性，因此文章作者提出用先用传统卷积预测卷积位置的<strong>offset</strong>，使得3x3的卷积不再是规则的方形。</p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/mccodlnhyanwxe09t35x1qg3/image_1csqb5pke8ij1v8jg09frt1je237.png" alt="image_1csqb5pke8ij1v8jg09frt1je237.png-113.4kB"></p>
+<p>可以实现感受野的改变：</p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/oenkmnck36mjumbnach9iwka/image_1csqb6leu7ql1eh71bqv1jjlanj3k.png" alt="image_1csqb6leu7ql1eh71bqv1jjlanj3k.png-340.2kB"></p>
+<p>以3x3为例，实现步骤如下：</p>
+<p><1> 先用一个channel为18（2<em>3</em>3 = 18）的传统卷积预测每个点的offset，这里18是因为每个点的offset是一个二维向量（确定方向），一共有3*3=9个点，故channel为18；</1></p>
+<p><2> 根据算出来的offset，计算新的9个点在特征图的上的值，由于可能算出来的offset为(0.3, 0.5)这种小数，也就是可能会需要知道特征图上(3.3,4.5)位置的值，所以作者用双线性差值计算这些经过offset修正的位置的响应；</2></p>
+<p><3> 最后就是与卷积核卷积得到最终的值。</3></p>
+<h2 id="Focal-Loss"><a href="#Focal-Loss" class="headerlink" title="Focal Loss"></a>Focal Loss</h2><p>Focal Loss的思想是通过减少<strong>易分类样本</strong>的loss权重，使得模型在训练时更专注于难分类的样本。详见我的另一篇笔记 <a href="http://sanshibayuan.me/2018/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%91%20Focal%20Loss%20for%20Dense%20Object%20Detection/" target="_blank" rel="noopener">【论文阅读笔记】 Focal Loss for Dense Object Detection</a>。</p>
+<h2 id="SoftNMS"><a href="#SoftNMS" class="headerlink" title="SoftNMS"></a>SoftNMS</h2><p><img src="http://static.zybuluo.com/sanshibayuan/7mpibgkp0n33gyu04q5nsa5g/image_1csqa6d6h1nufjef137j5uh1jo39.png" alt="image_1csqa6d6h1nufjef137j5uh1jo39.png-571.5kB"></p>
+<p>Soft NMS使用一行代码改进了NMS算法：IoU如果超过某个阈值，不再是直接排除掉这个框，而是降低它的得分。得分如果低到一定程度就会被排除，但是如果降低后仍然比较高，就有保留下来的机会。<br>降低分数的方法有线性和高斯。可以参考作者的源代码。</p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/wgb1l9l35gchstmecix3hy73/image_1csqb1k8u1r7ipbp1s9dkdd1rot2d.png" alt="image_1csqb1k8u1r7ipbp1s9dkdd1rot2d.png-25.9kB"></p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/lf09xkovwsx011roituiaxlg/image_1csqb0l4dpp4aa1aledfj1jqu20.png" alt="image_1csqb0l4dpp4aa1aledfj1jqu20.png-75.1kB"></p>
 
       
     </div>
@@ -430,8 +455,17 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -502,6 +536,22 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Augmentation"><span class="nav-number">1.</span> <span class="nav-text">Data Augmentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OHEM"><span class="nav-number">2.</span> <span class="nav-text">OHEM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deformable-Conv"><span class="nav-number">3.</span> <span class="nav-text">Deformable Conv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Focal-Loss"><span class="nav-number">4.</span> <span class="nav-text">Focal Loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SoftNMS"><span class="nav-number">5.</span> <span class="nav-text">SoftNMS</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

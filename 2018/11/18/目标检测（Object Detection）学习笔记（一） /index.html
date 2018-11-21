@@ -88,8 +88,9 @@
 <meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇学习笔记内容包括以下内容：  发展现状 关键任务 评价指标 常用数据集 检测流程 检测框架">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/r4nla3z47in7412fgrmr3nf8/image_1csq7cjhalliu431u4h1mv21kfb9.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png">
-<meta property="og:updated_time" content="2018-11-19T15:04:48.112Z">
+<meta property="og:updated_time" content="2018-11-21T05:26:18.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测（Object Detection）学习笔记（一）综述">
 <meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇学习笔记内容包括以下内容：  发展现状 关键任务 评价指标 常用数据集 检测流程 检测框架">
@@ -338,9 +339,27 @@
 <h2 id="发展现状"><a href="#发展现状" class="headerlink" title="发展现状"></a>发展现状</h2><p>随着深度学习技术的火热发展，目标检测算法也从基于手工特征的传统算法转向了基于深度神经网络的检测技术。从最初 2013 年提出的 R-CNN、OverFeat，到后面的 Fast/Faster R-CNN、SSD、YOLO 系列，以及Mask R-CNN、RefineDet、RFBNet等(见下图,完整论文列表参见<a href="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" target="_blank" rel="noopener">1</a>)。短短不到五年时间，基于深度学习的目标检测技术，在网络结构上，从 two-stage 到 one-stage，从 bottom-up only 到 Top-Down，从 single scale network 到 feature pyramid network，从面向 PC 端到面向移动端，都涌现出许多好的算法技术，这些算法在开放目标检测数据集上的检测效果和性能都很出色。</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/19cmpqgfhve7mvr6copoeqt0/image_1csdgmgeg8q9ajg1pek2pi1elmm.png" alt="image_1csdgmgeg8q9ajg1pek2pi1elmm.png-248.9kB"></p>
 <h2 id="关键任务"><a href="#关键任务" class="headerlink" title="关键任务"></a>关键任务</h2><p>目标检测任务可分为两个关键的子任务：目标分类和目标定位。目标分类任务负责判断输入图像或所选择图像区域（Proposals）中是否有感兴趣类别的物体出现，输出一系列带分数的标签表明感兴趣类别的物体出现在输入图像或所选择图像区域（Proposals）中的可能性。目标定位任务负责确定输入图像或所选择图像区域（Proposals）中感兴趣类别的物体的位置和范围，输出物体的包围盒、或物体中心、或物体的闭合边界等，通常使用方形包围盒，即Bounding Box用来表示物体的位置信息。</p>
-<h2 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h2><h3 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h3><p>目标检测问题同时是一个回归和分类问题。首先，为了评估定位精度，需要计算IoU（Intersection over Union，介于0到1之间），其表示预测框与真实框（ground-truth box）之间的重叠程度。IoU越高，预测框的位置越准确。因而，在评估预测框时，通常会设置一个IoU阈值（如0.5），只有当预测框与真实框的IoU值大于这个阈值时，该预测框才被认定为真阳性（True Positive, TP），反之就是假阳性（False Positive，FP）。</p>
-<h3 id="mAP"><a href="#mAP" class="headerlink" title="mAP"></a>mAP</h3><p>对于二分类，AP（Average Precision）是一个重要的指标，这是信息检索中的一个概念，基于precision-recall曲线计算出来，详情见这里。对于目标检测，首先要单独计算各个类别的AP值，这是评估检测效果的重要指标。取各个类别的AP的平均值，就得到一个综合指标mAP（Mean Average Precision），mAP指标可以避免某些类别比较极端化而弱化其它类别的性能这个问题。</p>
-<p>对于目标检测，mAP一般在某个固定的IoU上计算，但是不同的IoU值会改变TP和FP的比例，从而造成mAP的差异。COCO数据集提供了官方的评估指标，它的AP是计算一系列IoU下（0.5:0.05:0.9，见说明）AP的平均值，这样可以消除IoU导致的AP波动。其实对于PASCAL VOC数据集也是这样，Facebook的Detectron上的有比较清晰的实现。</p>
+<h2 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h2><h3 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h3><p>IoU是预测框与ground truth的交集和并集的比值。这个量也被称为Jaccard指数，并于20世纪初由Paul Jaccard首次提出。为了得到交集和并集，我们首先将预测框与ground truth放在一起，如图所示。</p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/r4nla3z47in7412fgrmr3nf8/image_1csq7cjhalliu431u4h1mv21kfb9.png" alt="image_1csq7cjhalliu431u4h1mv21kfb9.png-8.7kB"></p>
+<p>目标检测问题同时是一个回归和分类问题。首先，为了评估定位精度，需要计算IoU（Intersection over Union，介于0到1之间），其表示预测框与真实框（ground-truth box）之间的重叠程度。IoU越高，预测框的位置越准确。因而，在评估预测框时，通常会设置一个IoU阈值（如0.5），只有当预测框与真实框的IoU值大于这个阈值时，该预测框才被认定为真阳性（True Positive, TP），反之就是假阳性（False Positive，FP）。</p>
+<h3 id="mAP"><a href="#mAP" class="headerlink" title="mAP"></a>mAP</h3><h4 id="mAP定义及相关概念"><a href="#mAP定义及相关概念" class="headerlink" title="mAP定义及相关概念"></a>mAP定义及相关概念</h4><ul>
+<li>mAP: mean Average Precision, 即各类别AP的平均值AP: PR曲线下面积</li>
+<li>PR曲线: Precision-Recall曲线</li>
+<li>Precision: TP / (TP + FP)</li>
+<li>Recall: TP / (TP + FN)</li>
+<li>TP: IoU&gt;阈值的检测框数量（同一Ground Truth只计算一次）</li>
+<li>FP: IoU&lt;=阈值的检测框，或者是检测到同一个GT的多余检测框的数量</li>
+<li>FN: 没有检测到的GT的数量</li>
+</ul>
+<h4 id="mAP计算步骤"><a href="#mAP计算步骤" class="headerlink" title="mAP计算步骤"></a>mAP计算步骤</h4><ul>
+<li>首先统计检测出的boxes总数（N=TP+FN)，并按照confidence排序；</li>
+<li>随后根据设定好的IoU阈值（与GT），判断每个区域为TP或FP。如同一个GT检测出多个区域则只取confidence最大的为TP，其他全部算作FP；</li>
+<li>依次添加box，计算累计recall，precision，取每个recall值下的最大precision；</li>
+<li>计算P-R曲线面积，即该类别下的AP；</li>
+<li>计算所有类别，平均，得到mAP。</li>
+</ul>
+<p>对于目标检测，mAP一般在某个固定的IoU上计算，但是不同的IoU值会改变TP和FP的比例，从而造成mAP的差异。COCO数据集提供了官方的评估指标，它的AP是计算<strong>一系列IoU</strong>下（0.5:0.05:0.9，见说明）AP的平均值，这样可以消除IoU导致的AP波动。其实对于PASCAL VOC数据集也是这样，Facebook的Detectron上的有比较清晰的实现。</p>
+<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a href="https://www.zhihu.com/question/53405779" target="_blank" rel="noopener">目标检测中的mAP是什么含义？-知乎</a><br><a href="https://github.com/rafaelpadilla/Object-Detection-Metrics" target="_blank" rel="noopener">Metrics for object detection -github</a></p>
 <h3 id="FPS"><a href="#FPS" class="headerlink" title="FPS"></a>FPS</h3><p>除了检测准确度，目标检测算法的另外一个重要性能指标是速度，只有速度快，才能实现实时检测，这对一些应用场景极其重要。评估速度的常用指标是每秒帧率（Frame Per Second，FPS），即每秒内可以处理的图片数量。当然要对比FPS，你需要在同一硬件上进行。另外也可以使用处理一张图片所需时间来评估检测速度，时间越短，速度越快。</p>
 <h2 id="常用数据集"><a href="#常用数据集" class="headerlink" title="常用数据集"></a>常用数据集</h2><p>目标检测常用的数据集包括PASCAL VOC，ImageNet，MS COCO等数据集，这些数据集用于研究者测试算法性能或者用于竞赛。</p>
 <h3 id="PASCAL-VOC"><a href="#PASCAL-VOC" class="headerlink" title="PASCAL VOC"></a>PASCAL VOC</h3><p>PASCAL VOC（The PASCAL Visual Object Classification）是目标检测，分类，分割等领域一个有名的数据集。从2005到2012年，共举办了8个不同的挑战赛。PASCAL VOC包含约10,000张带有边界框的图片用于训练和验证。但是，PASCAL VOC数据集仅包含20个类别，因此其被看成目标检测问题的一个基准数据集。</p>
@@ -349,12 +368,12 @@
 <h2 id="检测流程"><a href="#检测流程" class="headerlink" title="检测流程"></a>检测流程</h2><p>基于以上两个子任务，现代目标检测技术的流程基本可以分为如下步骤，</p>
 <ul>
 <li>输入图像；</li>
-<li>Backbone主干网络，用以提取图片特征；</li>
-<li>Head出口，生成proposal与得到分类评分；</li>
-<li>Postprocess后处理，使用NMS等手段优化结果</li>
+<li>Backbone即主干网络，用以学习图片特征，一般复用图像分类网络；</li>
+<li>Head即出口，从图像特征中学习检测目标，如生成proposal与得到分类评分；</li>
+<li>Postprocess后处理，使用NMS等手段优化结果。</li>
 </ul>
 <p><img src="http://static.zybuluo.com/sanshibayuan/sy8ntz4y49y8l2nk08gc8j6b/image_1csi9f0aag8l1i9m14c8dhp2k89.png" alt="image_1csi9f0aag8l1i9m14c8dhp2k89.png-84.7kB"></p>
-<h2 id="检测框架"><a href="#检测框架" class="headerlink" title="检测框架"></a>检测框架</h2><p>目标检测框架大致分为两大类，第一是two-stage 框架，先进行proposal区域生成，再进行目标分类；另一个是one-stage, end to end的框架，只使用一个网络中直接输出结果。一般来讲，one-stage 检测器的 recall 较高，但是 localization 会有所折衷；相反， two-stage 检测器的定位能力则较强，但是 recall 较低，主要原因是第二个 stage 可以 refine 框的精度，但是也会误杀一些正样本。之前的普遍观点是 one-stage 检测器往往更快，比如 YOLO、SSD； two-stage 检测器往往更准，比如 Faster R-CNN、FPN，但从最新的进展来看，这两种方法的区别已经不大。</p>
+<h2 id="检测框架"><a href="#检测框架" class="headerlink" title="检测框架"></a>检测框架</h2><p>目标检测框架大致分为两大类，一个是<strong>two-stage</strong> 框架，先进行proposal区域生成，再进行目标分类；另一个是<strong>one-stage</strong>, end to end的框架，只使用一个网络中直接输出结果。一般来讲，one-stage 检测器的 recall 较高，但是 localization 会有所折衷；相反， two-stage 检测器的定位能力则较强，但是 recall 较低，主要原因是第二个 stage 可以 refine 框的精度，但是也会误杀一些正样本。之前的普遍观点是 one-stage 检测器往往更快，比如 YOLO、SSD； two-stage 检测器往往更准，比如 Faster R-CNN、FPN，但从最新的进展来看，这两种方法的区别已经不大。</p>
 
       
     </div>
@@ -540,7 +559,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发展现状"><span class="nav-number">1.</span> <span class="nav-text">发展现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键任务"><span class="nav-number">2.</span> <span class="nav-text">关键任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价指标"><span class="nav-number">3.</span> <span class="nav-text">评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IoU"><span class="nav-number">3.1.</span> <span class="nav-text">IoU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mAP"><span class="nav-number">3.2.</span> <span class="nav-text">mAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPS"><span class="nav-number">3.3.</span> <span class="nav-text">FPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用数据集"><span class="nav-number">4.</span> <span class="nav-text">常用数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PASCAL-VOC"><span class="nav-number">4.1.</span> <span class="nav-text">PASCAL VOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet"><span class="nav-number">4.2.</span> <span class="nav-text">ImageNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#COCO"><span class="nav-number">4.3.</span> <span class="nav-text">COCO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测流程"><span class="nav-number">5.</span> <span class="nav-text">检测流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测框架"><span class="nav-number">6.</span> <span class="nav-text">检测框架</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发展现状"><span class="nav-number">1.</span> <span class="nav-text">发展现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键任务"><span class="nav-number">2.</span> <span class="nav-text">关键任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价指标"><span class="nav-number">3.</span> <span class="nav-text">评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IoU"><span class="nav-number">3.1.</span> <span class="nav-text">IoU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mAP"><span class="nav-number">3.2.</span> <span class="nav-text">mAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP定义及相关概念"><span class="nav-number">3.2.1.</span> <span class="nav-text">mAP定义及相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mAP计算步骤"><span class="nav-number">3.2.2.</span> <span class="nav-text">mAP计算步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考链接"><span class="nav-number">3.2.3.</span> <span class="nav-text">参考链接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPS"><span class="nav-number">3.3.</span> <span class="nav-text">FPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用数据集"><span class="nav-number">4.</span> <span class="nav-text">常用数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PASCAL-VOC"><span class="nav-number">4.1.</span> <span class="nav-text">PASCAL VOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet"><span class="nav-number">4.2.</span> <span class="nav-text">ImageNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#COCO"><span class="nav-number">4.3.</span> <span class="nav-text">COCO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测流程"><span class="nav-number">5.</span> <span class="nav-text">检测流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测框架"><span class="nav-number">6.</span> <span class="nav-text">检测框架</span></a></li></ol></div>
             
 
           </div>

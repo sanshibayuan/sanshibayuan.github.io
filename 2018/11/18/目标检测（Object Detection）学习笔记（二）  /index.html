@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对以下模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet DenseNet Mask R-CNN  不断更新ing…">
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇笔记包括对以下经典模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet不断更新ing…">
 <meta name="keywords" content="CV">
 <meta property="og:type" content="article">
 <meta property="og:title" content="目标检测（Object Detection）学习笔记（二）各种模型">
 <meta property="og:url" content="http://yoursite.com/2018/11/18/目标检测（Object Detection）学习笔记（二）  /index.html">
 <meta property="og:site_name" content="三十八元">
-<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对以下模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet DenseNet Mask R-CNN  不断更新ing…">
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇笔记包括对以下经典模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet不断更新ing…">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/hz30g7sq9npcnfeldaogh0nj/image_1csdo1l19uut1ald36nvam1a7a9.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/vcnw3pyf94oq2a6xel3ivdcq/image_1csfjrkh6ppffi21q5uj9i5s4m.png">
@@ -96,10 +96,11 @@
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bvb12rhk7uqgohej5hhj1p11/image_1csj0bkaj1ib49vhhnm1j5grcjp.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png">
 <meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/bvb12rhk7uqgohej5hhj1p11/image_1csj0bkaj1ib49vhhnm1j5grcjp.png">
-<meta property="og:updated_time" content="2018-11-19T15:01:57.594Z">
+<meta property="og:image" content="http://static.zybuluo.com/sanshibayuan/lflluzdfkcbjiohtukk6ho04/image_1cg3u6pcb1u2j1io01h5v1uva1doqm.png">
+<meta property="og:updated_time" content="2018-11-21T05:23:58.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测（Object Detection）学习笔记（二）各种模型">
-<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });      本篇笔记包括对以下模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet DenseNet Mask R-CNN  不断更新ing…">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}}); 本篇笔记包括对以下经典模型的个人总结和理解：  Faster R-CNN YOLO 系列 SSD Resnet不断更新ing…">
 <meta name="twitter:image" content="http://static.zybuluo.com/sanshibayuan/hz30g7sq9npcnfeldaogh0nj/image_1csdo1l19uut1ald36nvam1a7a9.png">
 
 
@@ -331,25 +332,14 @@
 
       
         <hr>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-});
-</script>
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-
-<p>本篇笔记包括对以下模型的个人总结和理解：</p>
+<p><script type="text/x-mathjax-config"><br>MathJax.Hub.Config({<br>tex2jax: {inlineMath: [[‘$’,’$’], [‘\(‘,’\)’]]}<br>});<br></script></p>
+<p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"><br></script><br>本篇笔记包括对以下经典模型的个人总结和理解：</p>
 <ul>
 <li>Faster R-CNN</li>
 <li>YOLO 系列</li>
 <li>SSD</li>
-<li>Resnet</li>
-<li>DenseNet</li>
-<li>Mask R-CNN</li>
+<li>Resnet<br>不断更新ing… </li>
 </ul>
-<p>不断更新ing… </p>
 <a id="more"></a>
 <h2 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h2><p>Faster R-CNN是two-stage检测框架的代表作，在各大竞赛的排行榜上，以它为基础的变体都占据着统治地位。Faster R-CNN的网络结构图如下图：</p>
 <p><img src="http://static.zybuluo.com/sanshibayuan/hz30g7sq9npcnfeldaogh0nj/image_1csdo1l19uut1ald36nvam1a7a9.png" alt="FasterRCNN网络结构图"></p>
@@ -375,10 +365,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p><img src="http://static.zybuluo.com/sanshibayuan/elup0jxlx117pd9p44sdsq8c/image_1csijnk2p19t41pp3lsm1pga1smh1t.png" alt="image_1csjbq4iuapv4461ibp1snn9sf26.png-321.2kB"></p>
 <p>如上图所示，YOLO的检测流程简单概述如下：</p>
 <ol>
-<li>将原图划分为SxS的网格。如果一个目标的中心落入某个格子，这个格子就负责检测该目标；</li>
-<li>每个网格要预测<strong>B</strong>个bounding boxes，以及<strong>C</strong>个类别概率$Pr(class|object)$；</li>
+<li>将原图划分为S*S的网格。如果一个目标的中心落入某个格子，这个格子就负责检测该目标；</li>
+<li>每个网格要预测B个bounding boxes，以及<strong>C</strong>个类别概率$Pr(class|object)$；</li>
 <li>每个bounding box除了要回归自身的位置之外，还要附带预测一个<strong>confidence</strong>值。这个confidence代表了所预测的box中含有目标的置信度和这个bounding box预测的类别准确率两重信息；</li>
-<li>由于输入图像被分为SxS网格，每个网格包括5个预测量：$(x, y, w, h, confidence)$和一个C类，所以网络输出是$SxSx(5xB+C)$大小；</li>
+<li>由于输入图像被分为S<em>S网格，每个网格包括5个预测量：$(x, y, w, h, confidence)$和一个C类，所以网络输出是$S</em>S<em>(5</em>B+C)$大小；</li>
 <li>在检测目标的时候，每个网格预测的类别条件概率和bounding box预测的confidence信息相乘，就得到每个bounding box的class-specific confidence score。</li>
 <li>使用NMS过滤得到最终的检测框体。</li>
 </ol>
@@ -391,7 +381,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <li>识别物体位置精准性差。</li>
 <li>召回率低，尤其是对小目标。</li>
 </ul>
-<h3 id="YOLO-v2，v3（TODO"><a href="#YOLO-v2，v3（TODO" class="headerlink" title="YOLO-v2，v3（TODO)"></a>YOLO-v2，v3（TODO)</h3><p>针对YOLO-v1中存在的问题，作者在v2中进行了改进，并在v3中进行了更多尝试。<br>YOLO-v2中的改进有以下几点：</p>
+<h3 id="YOLO-v2，v3"><a href="#YOLO-v2，v3" class="headerlink" title="YOLO-v2，v3"></a>YOLO-v2，v3</h3><p>针对YOLO-v1中存在的问题，作者在v2中进行了改进，并在v3中进行了更多尝试。<br>YOLO-v2中的改进有以下几点：</p>
 <ul>
 <li>Batch Normalization</li>
 <li>High Resolution Classifier</li>
@@ -401,6 +391,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <li>Fine-Grained Features</li>
 <li>Multi-Scale Training</li>
 </ul>
+<p>此外，作者还同时提出了YOLO9000。</p>
 <p>YOLO-v3中的改进有以下几点：</p>
 <ul>
 <li>Resnet</li>
@@ -417,8 +408,11 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <li>回归预测<br>SSD中使用<strong>3x3的卷积</strong>对每个Prior Box的类别和位置直接进行回归</li>
 </ul>
 <p>论文和代码的细节同样可以参考<a href="https://zhuanlan.zhihu.com/p/35642094" target="_blank" rel="noopener">SSD 系列论文总结-方良骥</a>与<a href="https://zhuanlan.zhihu.com/p/33544892" target="_blank" rel="noopener">目标检测|SSD原理与实现-我是小将</a>。</p>
-<h2 id="不得不提的Resnet"><a href="#不得不提的Resnet" class="headerlink" title="不得不提的Resnet"></a>不得不提的Resnet</h2><p><a href="https://zhuanlan.zhihu.com/p/31006686" target="_blank" rel="noopener">从LeNet-5到DenseNet -山隹木又</a><br><a href="https://zhuanlan.zhihu.com/p/28124810https://zhuanlan.zhihu.com/p/35642094" target="_blank" rel="noopener">一文简述ResNet及其多种变体 -机器之心</a><br><a href="https://zhuanlan.zhihu.com/p/28124810https://zhuanlan.zhihu.com/p/35642094" target="_blank" rel="noopener">为什么ResNet和DenseNet可以这么深？一文详解残差块为何有助于解决梯度弥散问题。 -justin ho</a></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://github.com/hoya012/deep_learning_object_detection" target="_blank" rel="noopener">https://github.com/hoya012/deep_learning_object_detection</a></p>
+<h2 id="Backbone网络的改进"><a href="#Backbone网络的改进" class="headerlink" title="Backbone网络的改进"></a>Backbone网络的改进</h2><p>一些参考资料：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/31006686" target="_blank" rel="noopener">从LeNet-5到DenseNet -山隹木又</a><br><a href="https://zhuanlan.zhihu.com/p/28124810https://zhuanlan.zhihu.com/p/35642094" target="_blank" rel="noopener">一文简述ResNet及其多种变体 -机器之心</a><br><a href="https://zhuanlan.zhihu.com/p/28124810https://zhuanlan.zhihu.com/p/35642094" target="_blank" rel="noopener">为什么ResNet和DenseNet可以这么深？一文详解残差块为何有助于解决梯度弥散问题。 -justin ho</a></p>
+<h3 id="Resnet"><a href="#Resnet" class="headerlink" title="Resnet"></a>Resnet</h3><p>ResNet 主要的创新在残差网络，其实这个网络的提出本质上还是要解决层次比较深的时候无法训练的问题。这种借鉴了Highway Network思想的网络相当于旁边专门开个<strong>Short Cut</strong>使得输入可以直达输出，而优化的目标由原来的拟合输出H(x)变成输出和输入的差H(x)-x，其中H(X)是某一层原始的的期望映射输出，x是输入。<br>优化后的结构新结构中的中间3x3的卷积层首先在一个降维1x1卷积层下减少了计算，然后在另一个1x1的卷积层下做了还原，既保持了精度又减少了计算量</p>
+<p><img src="http://static.zybuluo.com/sanshibayuan/lflluzdfkcbjiohtukk6ho04/image_1cg3u6pcb1u2j1io01h5v1uva1doqm.png" alt="image_1cg3u6pcb1u2j1io01h5v1uva1doqm.png-114.5kB"></p>
+<h3 id="Densenet"><a href="#Densenet" class="headerlink" title="Densenet"></a>Densenet</h3><p>借用论文里的话，ResNet直接通过”Summation”操作将特征加起来，一定程度上阻碍（impede）了网络中的信息流。DenseNet通过连接（concatenate）操作来结合feature map，并且每一层都与其他层有关系，都有”沟通“，这种方式使得信息流最大化。其实DenseNet中的dense connectivity就是一种升级版的shortcut connection，提升了网络的鲁棒性并且加快了学习速度。</p>
 
       
     </div>
@@ -604,7 +598,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Faster-R-CNN"><span class="nav-number">1.</span> <span class="nav-text">Faster R-CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO系列"><span class="nav-number">2.</span> <span class="nav-text">YOLO系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO-v1"><span class="nav-number">2.1.</span> <span class="nav-text">YOLO-v1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO-v2，v3（TODO"><span class="nav-number">2.2.</span> <span class="nav-text">YOLO-v2，v3（TODO)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">3.</span> <span class="nav-text">SSD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不得不提的Resnet"><span class="nav-number">4.</span> <span class="nav-text">不得不提的Resnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Faster-R-CNN"><span class="nav-number">1.</span> <span class="nav-text">Faster R-CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO系列"><span class="nav-number">2.</span> <span class="nav-text">YOLO系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO-v1"><span class="nav-number">2.1.</span> <span class="nav-text">YOLO-v1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO-v2，v3"><span class="nav-number">2.2.</span> <span class="nav-text">YOLO-v2，v3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">3.</span> <span class="nav-text">SSD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backbone网络的改进"><span class="nav-number">4.</span> <span class="nav-text">Backbone网络的改进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Resnet"><span class="nav-number">4.1.</span> <span class="nav-text">Resnet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Densenet"><span class="nav-number">4.2.</span> <span class="nav-text">Densenet</span></a></li></ol></li></ol></div>
             
 
           </div>
