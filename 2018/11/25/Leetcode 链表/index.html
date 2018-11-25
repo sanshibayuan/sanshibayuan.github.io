@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）   83. 删除排序链表中的重复元素 E12345L">
+<meta name="description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）">
 <meta name="keywords" content="Data Structure and Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 链表">
 <meta property="og:url" content="http://yoursite.com/2018/11/25/Leetcode 链表/index.html">
 <meta property="og:site_name" content="三十八元">
-<meta property="og:description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）   83. 删除排序链表中的重复元素 E12345L">
+<meta property="og:description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-25T04:19:30.206Z">
+<meta property="og:updated_time" content="2018-11-25T04:21:27.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 链表">
-<meta name="twitter:description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）   83. 删除排序链表中的重复元素 E12345L">
+<meta name="twitter:description" content="83 删除排序链表中的重复元素 简单 160 相交链表 简单 206 反转链表 简单 203 移除链表元素 简单 21 合并两个有序链表 简单 237 删除链表中的节点 简单 24 两两交换链表中的节点 中等 19 删除链表的倒数第N个节点 中等 2 两数相加 中等 92 反转链表II 中等     445 两数相加 II 中等（stack）">
 
 
 
@@ -333,6 +333,7 @@
 <li>92 反转链表II 中等    </li>
 <li>445 两数相加 II 中等（stack） </li>
 </ul>
+<a id="more"></a>
 <h2 id="83-删除排序链表中的重复元素-E"><a href="#83-删除排序链表中的重复元素-E" class="headerlink" title="83. 删除排序链表中的重复元素 E"></a>83. 删除排序链表中的重复元素 E</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">deleteDuplicates</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span> || head-&gt;next == <span class="literal">nullptr</span>) <span class="keyword">return</span> head;</span><br><span class="line">    head-&gt;next = deleteDuplicates(head-&gt;next);</span><br><span class="line">    <span class="keyword">return</span> head-&gt;val == head-&gt;next-&gt;val?head-&gt;next:head;                    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​    </p>
 <h2 id="21-合并两个有序链表-E"><a href="#21-合并两个有序链表-E" class="headerlink" title="21. 合并两个有序链表 E"></a>21. 合并两个有序链表 E</h2><p>输入：1-&gt;2-&gt;4, 1-&gt;3-&gt;4<br>输出：1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</p>
