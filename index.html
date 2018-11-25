@@ -334,10 +334,7 @@
 <li>19 删除链表的倒数第N个节点 中等</li>
 <li>2 两数相加 中等</li>
 <li>92 反转链表II 中等    </li>
-<li><ol start="445">
-<li>两数相加 II 中等（stack） </li>
-</ol>
-</li>
+<li>445 两数相加 II 中等（stack） </li>
 </ul>
 <h2 id="83-删除排序链表中的重复元素-E"><a href="#83-删除排序链表中的重复元素-E" class="headerlink" title="83. 删除排序链表中的重复元素 E"></a>83. 删除排序链表中的重复元素 E</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">deleteDuplicates</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span> || head-&gt;next == <span class="literal">nullptr</span>) <span class="keyword">return</span> head;</span><br><span class="line">    head-&gt;next = deleteDuplicates(head-&gt;next);</span><br><span class="line">    <span class="keyword">return</span> head-&gt;val == head-&gt;next-&gt;val?head-&gt;next:head;                    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​    </p>
